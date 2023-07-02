@@ -63,12 +63,13 @@ public:
 
 	Graph();
 	void Parse(std::istream& source = std::cin);
-	void Preprocess(); void  Vipe(); // откат параметров вершин к начальному состооянию
+	void Preprocess(); 
+	void  Vipe(); // откат параметров вершин к начальному состооянию
 
 	long long ComputeDistance(int s, int t);
 	~Graph() = default;
 private:
-	void  Vipe(const std::vector <int>& changed); // откат параметров вершин к начальному состооянию
+	void Vipe(const std::vector <int>& changed); // откат параметров вершин к начальному состооянию
 	void VipeForward(const std::vector <int>& changed);
 	void VipeBackward(const std::vector <int>& changed);
 	int GetImportance(int v);
@@ -77,7 +78,8 @@ private:
 	int GetContractedNeighbours(int v);
 	int GetLevel(int v);
 	std::vector<Edge>  FindShorcuts(int v);
-	std::unordered_set<int> SearchWitnessPath(int u, int v, const std::unordered_map<int, long long>& ws, long long max_dist);
+	std::unordered_set<int> SearchWitnessPath
+	(int u, int v, const std::unordered_map<int, long long>& ws, long long max_dist);
 	void ContractNode(int v);
 	long long CalcMaxIncomeOutDist(int v);
 	void AddEdge(const Edge& e);

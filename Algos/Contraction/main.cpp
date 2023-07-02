@@ -43,13 +43,11 @@ void Test4() {
 	std::ifstream GraphFile("Test4.txt");
 	Graph g;
 	g.Parse(GraphFile);
-	LOG_DURATION("Preprocess")
-	{
+	LOG_DURATION("Preprocess"){
 		g.Preprocess();
 	}
 
-	LOG_DURATION("WO")
-	{
+	LOG_DURATION("WO"){
 		std::ifstream Query("Query.txt");
 
 		int t;
@@ -63,8 +61,7 @@ void Test4() {
 		}
 	}
 
-	LOG_DURATION("WITH")
-	{
+	LOG_DURATION("WITH"){
 		std::ifstream Query("Query.txt");
 
 		int t;
@@ -89,15 +86,13 @@ void TestNewYork() {
 	g.Parse(GraphFile);
 	std::cout << "Start NewYork Test" << std::endl;
 
-	LOG_DURATION("Preprocess")
-	{
+	LOG_DURATION("Preprocess"){
 		g.Preprocess();
 	}
 	AssertEqual(g.ComputeDistance(0, 1), 803, " 1 to 2");
 
 
-	LOG_DURATION("WO")
-	{
+	LOG_DURATION("WO"){
 		std::ifstream Query("Query.txt");
 		int t;
 		Query >> t;
@@ -133,7 +128,6 @@ void Test6() {
 int main() {
 	std::cin.tie(nullptr);
 	std::ios::sync_with_stdio(false);
-
 	TestRunner Tr;
 	Tr.RunTest(Test5, "Test5");
 	Tr.RunTest(Test6, "Test6");
@@ -143,7 +137,6 @@ int main() {
 	Tr.RunTest(Test3, "Test3");
 	Tr.RunTest(Test4, "Test4");
 	Tr.RunTest(TestNewYork, "NewYorkTest");
-
 	Graph g;
 	g.Parse();
 	g.Preprocess();
