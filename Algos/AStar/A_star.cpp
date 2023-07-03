@@ -23,13 +23,14 @@ void Graph::Parse(std::istream& source)
 	adj.resize(n);
 	for (size_t i = 0; i < n; i++)
 	{
-		int x, y;
 		source >> adj[i].coord.x >> adj[i].coord.y;		
 	}
 	for (size_t i = 0; i < m; i++) {
 		int x, y, w;
 		source >> x >> y >> w;
-		adj[x - 1u].AdjList[ y - 1u] =w ;
+		x--;
+		y--;
+		adj[x].AdjList[ y ] =w ;
 		
 	}
 }
@@ -60,7 +61,7 @@ long long Graph::AStar(int s, int t){
 	while (!H.empty()){
 		auto u = H.top();
 		H.pop();
-		DistTo current{ u.vertex_,(double)adj[u.vertex_].d };
+		DistTo current{ u.vertex_,adj[u.vertex_].d };
 		if (u < current) continue;
 		for (auto v : adj[u.vertex_].AdjList){
 
@@ -68,7 +69,7 @@ long long Graph::AStar(int s, int t){
 			{
 				adj[v.first].d = adj[u.vertex_].d + v.second;
 				adj[v.first].prev = u.vertex_;
-				double new_cost = (double)adj[v.first].d + adj[v.first].coord.dist(adj[t].coord);
+				long long new_cost = adj[v.first].d +  static_cast <long long>( adj[v.first].coord.dist(adj[t].coord));
 				changed.push_back(v.first);
 				H.push({ v.first,new_cost });
 			}

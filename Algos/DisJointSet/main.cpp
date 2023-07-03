@@ -4,16 +4,16 @@
 
 namespace DJS {
 	struct  vertex {
-		size_t parent;
-		size_t rank = 0;
+		size_t parent =0u;
+		size_t rank = 0u;
 	};
 	class DJS final {
 	public:
 		DJS(size_t size_) {
 			v_.resize(size_);
-			for (size_t i = 0; i < size_; ++i) {
+			for (size_t i = 0u; i < size_; ++i) {
 				v_[i].parent = i;
-				v_[i].rank = 0;
+				v_[i].rank = 0u;
 			}
 		};
 		size_t Find(size_t i) { // path compression applied
@@ -74,7 +74,7 @@ namespace Kruskal {
 }
 
 
-int main(int argc, int** argv) {
+int main() {
 
 
 	return 0;

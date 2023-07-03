@@ -57,6 +57,11 @@ foreach(exec  ${executables})
 	else()
 		message(STATUS "Fail  Boost weren't find!")
 	endif()
+	if(MSVC)
+  target_compile_options(${exec} PRIVATE /W4 /WX)
+	else()
+  target_compile_options(${exec} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+	endif()
 		
 	endforeach()
 

@@ -16,7 +16,7 @@
 const long long Infinity = 9223372036854775807;
 struct DistTo { // simple structure used in Dijkstras algorithms, sorted by dist
 	DistTo() : vertex_(0), Dist_(0) {};
-	DistTo(int v, double d) :vertex_(v), Dist_(d) {};
+	DistTo(int v, long long d) :vertex_(v), Dist_(d) {};
 	int vertex_;
 	long long Dist_;
 };
@@ -33,8 +33,8 @@ bool operator < (const DistTo& lhs, const DistTo& rhs);
 bool operator > (const DistTo& lhs, const DistTo& rhs);
 struct  Point
 {
-	double x;
-	double y;
+	double x =0.;
+	double  y= 0.;
 	double dist(const Point& other) const
 	{
 		return std::hypot(x - other.x, y - other.y);
@@ -48,7 +48,7 @@ struct Vertex {	// Vertex of the graph used for Query process
 	Point coord;
 	int prev;
 
-	Vertex() :d(Infinity), prev(-1) {}
+	Vertex() :d(Infinity), prev(-1), coord({0.,0.}) {}
 };
 
 
