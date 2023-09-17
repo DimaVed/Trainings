@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace TestRunnerPrivate {
+namespace test_runner_private {
   template <typename K, typename V, template <typename, typename> class Map>
   std::ostream& PrintMap(std::ostream& os, const Map<K, V>& m) {
     os << "{";
@@ -55,17 +55,17 @@ std::ostream& operator<<(std::ostream& os, const std::set<T>& s) {
 
 template <class K, class V>
 std::ostream& operator<<(std::ostream& os, const std::map<K, V>& m) {
-  return TestRunnerPrivate::PrintMap(os, m);
+  return test_runner_private::PrintMap(os, m);
 }
 
 template <class K, class V>
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<K, V>& m) {
-  return TestRunnerPrivate::PrintMap(os, m);
+  return test_runner_private::PrintMap(os, m);
 }
 
 template <class T, class U>
 void AssertEqual(const T& t, const U& u, const std::string& hint = {}) {
-  if (!(t == u)) {
+  if (t != u) {
     std::ostringstream os;
     os << "Assertion failed: " << t << " != " << u;
     if (!hint.empty()) {
@@ -87,24 +87,24 @@ public:
       func();
       std::cerr << test_name << " OK" << std::endl;
     } catch (std::exception& e) {
-      ++fail_count;
+      ++fail_count_;
       std::cerr << test_name << " fail: " << e.what() << std::endl;
     } catch (...) {
-      ++fail_count;
+      ++fail_count_;
       std::cerr << "Unknown exception caught" << std::endl;
     }
   }
 
   ~TestRunner() {
     std::cerr.flush();
-    if (fail_count > 0) {
-      std::cerr << fail_count << " unit tests failed. Terminate" << std::endl;
+    if (fail_count_ > 0) {
+      std::cerr << fail_count_ << " unit tests failed. Terminate" << std::endl;
       exit(1);
     }
   }
 
 private:
-  int fail_count = 0;
+  int fail_count_ = 0;
 };
 
 #ifndef FILE_NAME

@@ -18,7 +18,7 @@ Graph::Graph() {
 
 void Graph::Parse(std::istream& source)
 {
-	int n, m;
+	size_t n, m;
 	source >> n >> m;
 	adj.resize(n);
 	for (size_t i = 0; i < n; i++)
@@ -37,7 +37,7 @@ void Graph::Parse(std::istream& source)
 
 void Graph::Process(std::istream& source, std::ostream& output)
 {
-	int t;
+	size_t t;
 	source >> t;
 	for (size_t i = 0; i < t; ++i) {
 		int u, v;
@@ -50,34 +50,36 @@ void Graph::Process(std::istream& source, std::ostream& output)
 
 
 
-long long Graph::AStar(int s, int t){
+int64_t Graph::AStar(int s, int t){
 	
 	std::vector <int> changed;
 	
 	adj[s].d = 0;
 	changed.push_back(s);
-	std::priority_queue <DistTo, std::vector <DistTo>, std::greater<DistTo>> H;
-	H.push({ s,0 });
-	while (!H.empty()){
-		auto u = H.top();
-		H.pop();
+	std::priority_queue <DistTo, std::vector <DistTo>, std::greater<DistTo>> h;
+	h.push({ s,0 });
+	while (!h.empty()){
+		auto u = h.top();
+		h.pop();
 		DistTo current{ u.vertex_,adj[u.vertex_].d };
-		if (u < current) continue;
+		if (u < current) { continue;
+}
 		for (auto v : adj[u.vertex_].AdjList){
 
 			if (adj[v.first].d > adj[u.vertex_].d + v.second)
 			{
 				adj[v.first].d = adj[u.vertex_].d + v.second;
 				adj[v.first].prev = u.vertex_;
-				long long new_cost = adj[v.first].d +  static_cast <long long>( adj[v.first].coord.dist(adj[t].coord));
+				int64_t new_cost = adj[v.first].d +  static_cast <int64_t>( adj[v.first].coord.dist(adj[t].coord));
 				changed.push_back(v.first);
-				H.push({ v.first,new_cost });
+				h.push({ v.first,new_cost });
 			}
 		}
-		if (adj[t].prev> 0) break;
+		if (adj[t].prev> 0) { break;
+}
 	}
 	auto current = t;
-	long long dist = 0;
+	int64_t dist = 0;
 	while (current != s){
 		auto pi = adj[current].prev;
 		if (pi < 0) {

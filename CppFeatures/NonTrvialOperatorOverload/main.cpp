@@ -3,12 +3,12 @@
 
 #define CPP20  true
 
-bool are_equal(double const d1, double const d2, double const epsilon = 0.001)
+bool AreEqual(double const d1, double const d2, double const epsilon = 0.001)
 {
 	return std::fabs(d1 - d2) < epsilon;
 }
 
-namespace Pressure
+namespace pressure
 {
 	enum class scale
 	{
@@ -19,24 +19,24 @@ namespace Pressure
 	};
 
 	template <scale S>
-	class quantity
+	class Quantity
 	{
-		const double amount;
+		const double amount_;
 	public:
-		constexpr explicit quantity(double const a) : amount(a) {}
+		constexpr explicit Quantity(double const a) : amount_(a) {}
 
-		explicit operator double() const { return amount; }
+		explicit operator double() const { return amount_; }
 	};
 
 
 #if CPP20
 	template <scale S>
-	inline bool operator==(quantity<S> const& lhs, quantity<S> const& rhs)
+	inline bool operator==(Quantity<S> const& lhs, Quantity<S> const& rhs)
 	{
-		return are_equal(static_cast<double>(lhs), static_cast<double>(rhs));
+		return AreEqual(static_cast<double>(lhs), static_cast<double>(rhs));
 	}
 	template <scale S>
-	inline auto operator <=> (quantity<S> const& lhs, quantity<S> const& rhs)
+	inline auto operator <=> (Quantity<S> const& lhs, Quantity<S> const& rhs)
 	{
 		return  static_cast<double>(lhs) <=> static_cast<double>(rhs);
 	}
@@ -84,25 +84,25 @@ namespace Pressure
 
 
 	template <scale S>
-	constexpr quantity<S> operator+(quantity<S> const& q1, quantity<S> const& q2)
+	constexpr Quantity<S> operator+(Quantity<S> const& q1, Quantity<S> const& q2)
 	{
-		return quantity<S>(static_cast<double>(q1) + static_cast<double>(q2));
+		return Quantity<S>(static_cast<double>(q1) + static_cast<double>(q2));
 	}
 
 	template <scale S>
-	constexpr quantity<S> operator-(quantity<S> const& q1, quantity<S> const& q2)
+	constexpr Quantity<S> operator-(Quantity<S> const& q1, Quantity<S> const& q2)
 	{
-		return quantity<S>(static_cast<double>(q1) - static_cast<double>(q2));
+		return Quantity<S>(static_cast<double>(q1) - static_cast<double>(q2));
 	}
 
 	template <scale S, scale R>
-	struct conversion_traits
+	struct ConversionTraits
 	{
 		static double convert(double const value) = delete;
 	};
 
 	template <>
-	struct conversion_traits<scale::Pa, scale::MPa>
+	struct ConversionTraits<scale::Pa, scale::MPa>
 	{
 		static double convert(double const value)
 		{
@@ -111,7 +111,7 @@ namespace Pressure
 	};
 
 	template <>
-	struct conversion_traits<scale::MPa, scale::Pa>
+	struct ConversionTraits<scale::MPa, scale::Pa>
 	{
 		static double convert(double const value)
 		{
@@ -120,7 +120,7 @@ namespace Pressure
 	};
 
 	template <>
-	struct conversion_traits<scale::Pa, scale::KgfperMm>
+	struct ConversionTraits<scale::Pa, scale::KgfperMm>
 	{
 		static double convert(double const value)
 		{
@@ -129,7 +129,7 @@ namespace Pressure
 	};
 
 	template <>
-	struct conversion_traits<scale::MPa, scale::KgfperMm>
+	struct ConversionTraits<scale::MPa, scale::KgfperMm>
 	{
 		static double convert(double const value)
 		{
@@ -138,7 +138,7 @@ namespace Pressure
 	};
 
 	template <>
-	struct conversion_traits<scale::KgfperMm, scale::MPa>
+	struct ConversionTraits<scale::KgfperMm, scale::MPa>
 	{
 		static double convert(double const value)
 		{
@@ -147,7 +147,7 @@ namespace Pressure
 	};
 
 	template <>
-	struct conversion_traits<scale::KgfperMm, scale::Pa>
+	struct ConversionTraits<scale::KgfperMm, scale::Pa>
 	{
 		static double convert(double const value)
 		{
@@ -155,7 +155,7 @@ namespace Pressure
 		}
 	};
 	template <>
-	struct conversion_traits<scale::KgfperM, scale::Pa>
+	struct ConversionTraits<scale::KgfperM, scale::Pa>
 	{
 		static double convert(double const value)
 		{
@@ -163,7 +163,7 @@ namespace Pressure
 		}
 	};
 	template <>
-	struct conversion_traits<scale::Pa, scale::KgfperM>
+	struct ConversionTraits<scale::Pa, scale::KgfperM>
 	{
 		static double convert(double const value)
 		{
@@ -172,69 +172,69 @@ namespace Pressure
 	};
 
 	template <scale R, scale S>
-	constexpr quantity<R> pressure_cast(quantity<S> const q)
+	constexpr Quantity<R> PressureCast(Quantity<S> const q)
 	{
-		return quantity<R>(conversion_traits<S, R>::convert(static_cast<double>(q)));
+		return Quantity<R>(ConversionTraits<S, R>::convert(static_cast<double>(q)));
 	}
 
 
-	constexpr quantity<scale::Pa> operator "" _Pa(long double const amount)
+	constexpr Quantity<scale::Pa> operator "" _Pa(long double const amount)
 	{
-		return quantity<scale::Pa> {static_cast<double>(amount)};
+		return Quantity<scale::Pa> {static_cast<double>(amount)};
 	}
 
-	constexpr quantity<scale::MPa> operator "" _Mpa(long double const amount)
+	constexpr Quantity<scale::MPa> operator "" _Mpa(long double const amount)
 	{
-		return quantity<scale::MPa> {static_cast<double>(amount)};
+		return Quantity<scale::MPa> {static_cast<double>(amount)};
 	}
 
-	constexpr quantity<scale::KgfperMm> operator "" _KgfperMm(long double const amount)
+	constexpr Quantity<scale::KgfperMm> operator "" _KgfperMm(long double const amount)
 	{
-		return quantity<scale::KgfperMm> {static_cast<double>(amount)};
+		return Quantity<scale::KgfperMm> {static_cast<double>(amount)};
 
 
 	}
-	constexpr quantity<scale::KgfperM> operator "" _KgfperM(long double const amount)
+	constexpr Quantity<scale::KgfperM> operator "" _KgfperM(long double const amount)
 	{
-		return quantity<scale::KgfperM> {static_cast<double>(amount)};
+		return Quantity<scale::KgfperM> {static_cast<double>(amount)};
 	}
 }
 
 int main( )
 {
-	using namespace Pressure;
+	using namespace pressure;
 
-	auto P1{ 1e+5_Pa };
-	auto P2{ 0.1_Mpa };
-	auto P3{ 0.0101936799184506_KgfperMm };
-	auto P4{ 10193.6799184506_KgfperM };
-	auto P5{ 2e+5_Pa };
+	auto p1{ 1e+5_Pa };
+	auto p2{ 0.1_Mpa };
+	auto p3{ 0.0101936799184506_KgfperMm };
+	auto p4{ 10193.6799184506_KgfperM };
+	auto p5{ 2e+5_Pa };
 
 
 	{
-		auto Ppa = pressure_cast<scale::Pa>(P2);
-		assert(P1 == Ppa);
+		auto ppa = PressureCast<scale::Pa>(p2);
+		assert(p1 == ppa);
 	}
 	{
-		auto PMpa = pressure_cast<scale::MPa>(P1);
-		assert((P2 == PMpa));
+		auto p_mpa = PressureCast<scale::MPa>(p1);
+		assert((p2 == p_mpa));
 	}
 	{
-		auto Pkgfmm = pressure_cast<scale::KgfperMm>(P2);
-		assert((P3 == Pkgfmm));
+		auto pkgfmm = PressureCast<scale::KgfperMm>(p2);
+		assert((p3 == pkgfmm));
 	}
 	{
-		auto Pkgfm = pressure_cast<scale::KgfperM>(P1);
-		assert((P4 == Pkgfm));
+		auto pkgfm = PressureCast<scale::KgfperM>(p1);
+		assert((p4 == pkgfm));
 	}
 	{
-		assert(P1 < P5);
+		assert(p1 < p5);
 	}
 	{
-		assert(P1 != P5);
+		assert(p1 != p5);
 	}
 	{
-		assert(P1 <= P5);
+		assert(p1 <= p5);
 	}
 
 	return 0;

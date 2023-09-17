@@ -1,6 +1,6 @@
 # Установка минимальной версии CMake 
 cmake_minimum_required (VERSION 3.20)
-project (Proj LANGUAGES CXX)
+project (Training LANGUAGES CXX)
 
 # создание решения
 set (OperatorOverload OperatorOverload)
@@ -37,9 +37,9 @@ foreach(exec  ${executables})
     message( STATUS ${exec})
 	# Установка 20 стандарта С++
 	set_target_properties (${exec} PROPERTIES CXX_STANDARD 20 CMAKE_CXX_STANDARD_REQUIRED ON)
-	# Установка статичской линковки для MSVC
+	# Установка статической линковки для MSVC
 	set_property (TARGET ${exec} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	# Установка флага многопоточной компилции
+	# Установка флага многопоточной компиляции
 	if (MSVC)
 	target_compile_options (${exec} PRIVATE "/MP")
 	endif()

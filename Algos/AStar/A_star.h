@@ -13,18 +13,18 @@
 #include "profile.h"
 
 
-const long long Infinity = 9223372036854775807;
+const int64_t kInfinity = 9223372036854775807;
 struct DistTo { // simple structure used in Dijkstras algorithms, sorted by dist
 	DistTo() : vertex_(0), Dist_(0) {};
-	DistTo(int v, long long d) :vertex_(v), Dist_(d) {};
+	DistTo(int v, int64_t d) :vertex_(v), Dist_(d) {};
 	int vertex_;
-	long long Dist_;
+	int64_t Dist_;
 };
 struct  Edge { // Used for shorcut searching
 	int from_;
 	int to_;
-	long long weight_;
-	Edge(int from, int to, long long weight) : from_(from), to_(to), weight_(weight) {};
+	int64_t weight_;
+	Edge(int from, int to, int64_t weight) : from_(from), to_(to), weight_(weight) {};
 	Edge() :from_(-1), to_(-1), weight_(0) {};
 };
 using Importance =DistTo; // data structure used in Contraction importance PriorityQue
@@ -35,7 +35,7 @@ struct  Point
 {
 	double x =0.;
 	double  y= 0.;
-	double dist(const Point& other) const
+	double Dist(const Point& other) const
 	{
 		return std::hypot(x - other.x, y - other.y);
 	}
@@ -44,11 +44,11 @@ struct  Point
 
 struct Vertex {	// Vertex of the graph used for Query process
 	std::unordered_map <int, int> AdjList; // adjacency list
-	long long d; // номер слоя // расстояние
+	int64_t d;
 	Point coord;
 	int prev;
 
-	Vertex() :d(Infinity), prev(-1), coord({0.,0.}) {}
+	Vertex() :d(kInfinity), coord({0.,0.}), prev(-1) {}
 };
 
 
@@ -63,11 +63,11 @@ public:
 	void Parse(std::istream& source = std::cin);
 	void Process(std::istream& source = std::cin, std::ostream& output = std::cout);
 
-	long long AStar(int s, int t);
+	int64_t AStar(int s, int t);
 	
 	~Graph() = default;
 private:
-	void  Vipe(const std::vector <int>& changed); // откат параметров вершин к начальному состооянию
+	void  Vipe(const std::vector <int>& changed); // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 };
 

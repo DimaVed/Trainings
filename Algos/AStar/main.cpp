@@ -37,10 +37,10 @@ int main() {
 	std::cin.tie(nullptr);
 	std::ios::sync_with_stdio(false);
 
-	TestRunner Tr;
-	Tr.RunTest(Test1, "Test1");
-	Tr.RunTest(Test2, "Test2");
-	Tr.RunTest(Test3, "Test3");
+	TestRunner tr;
+	tr.RunTest(Test1, "Test1");
+	tr.RunTest(Test2, "Test2");
+	tr.RunTest(Test3, "Test3");
 	Graph g;
 	g.Parse();
 
