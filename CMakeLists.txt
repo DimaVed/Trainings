@@ -1,39 +1,35 @@
+function(get_all_targets var)
+    set(targets)
+    get_all_targets_recursive(targets ${CMAKE_CURRENT_SOURCE_DIR})
+    set(${var} ${targets} PARENT_SCOPE)
+endfunction()
+
+macro(get_all_targets_recursive targets dir)
+    get_property(subdirectories DIRECTORY ${dir} PROPERTY SUBDIRECTORIES)
+    foreach(subdir ${subdirectories})
+        get_all_targets_recursive(${targets} ${subdir})
+    endforeach()
+
+    get_property(current_targets DIRECTORY ${dir} PROPERTY BUILDSYSTEM_TARGETS)
+    list(APPEND ${targets} ${current_targets})
+endmacro()
+
+
 # Установка минимальной версии CMake 
+
+
 cmake_minimum_required (VERSION 3.20)
 project (Training LANGUAGES CXX)
 
-# создание решения
-set (OperatorOverload OperatorOverload)
-add_executable (${OperatorOverload} 
- CppFeatures/NonTrvialOperatorOverload/main.cpp
-)
-set (DisJointSet DisJointSet)
-add_executable (${DisJointSet} 
- Algos/DisJointSet/main.cpp
-)
 
-set (Contraction Contraction)
-add_executable (${Contraction} 
- Algos/Contraction/main.cpp
- Algos/Contraction/Contraction.cpp
- Algos/Contraction/Contraction.h
- Algos/Contraction/profile.h
- Algos/Contraction/test_runner.h
-)
-set (AStar AStar)
-add_executable (${AStar} 
- Algos/AStar/main.cpp
- Algos/AStar/A_star.h
- Algos/AStar/A_star.cpp
- Algos/AStar/profile.h
- Algos/AStar/test_runner.h
-)
+add_subdirectory (Algorithms)
+add_subdirectory (CppFeatures)
+add_subdirectory (ParaPython)
 
-set(executables ${OperatorOverload} ${DisJointSet}
-${Contraction} ${AStar} )
 
-# Для всех исполняемых файлов
-foreach(exec  ${executables})
+get_all_targets(all_targets)
+
+foreach(exec  ${all_targets})
     message( STATUS ${exec})
 	# Установка 20 стандарта С++
 	set_target_properties (${exec} PROPERTIES CXX_STANDARD 20 CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -43,27 +39,10 @@ foreach(exec  ${executables})
 	if (MSVC)
 	target_compile_options (${exec} PRIVATE "/MP")
 	endif()
-	# настройка статической линковки Boost
-	set(Boost_USE_STATIC_LIBS       ON)
-	set(Boost_USE_MULTITHREADED     ON)
-	set(Boost_USE_STATIC_RUNTIME    ON)
-	# Поиск компонентов boost
-	find_package(Boost 1.79.0 COMPONENTS program_options locale)
-	# Линковка boost 
-	if(Boost_FOUND)
-		include_directories(${Boost_INCLUDE_DIRS}) 
-		LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
-		target_link_libraries(${exec} ${Boost_LIBRARIES})
-	else()
-		message(STATUS "Fail  Boost weren't find!")
-	endif()
 	if(MSVC)
-  target_compile_options(${exec} PRIVATE /W4 /WX)
+   target_compile_options(${exec} PRIVATE /W4 )
 	else()
-  target_compile_options(${exec} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(${exec} PRIVATE -Wall -Wextra -Wpedantic -Werror)
 	endif()
-		
-	endforeach()
-
-
-
+	
+endforeach()
