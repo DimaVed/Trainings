@@ -1,1 +1,2 @@
-# This is the C++ Training  repo. It contains samples of code which may be used in production codes
+#  Trainings
+Репозиторий содержит примеры кода на современном  С++, примеры иллюстирирующие особенности С++ и некоторые примечательные алгоритмы
