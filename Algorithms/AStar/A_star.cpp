@@ -70,7 +70,7 @@ int64_t Graph::AStar(int s, int t){
 			{
 				adj[v.first].d = adj[u.vertex_].d + v.second;
 				adj[v.first].prev = u.vertex_;
-				int64_t new_cost = adj[v.first].d +  static_cast <int64_t>( adj[v.first].coord.dist(adj[t].coord));
+				int64_t new_cost = adj[v.first].d +  static_cast <int64_t>( adj[v.first].coord.Dist(adj[t].coord));
 				changed.push_back(v.first);
 				h.push({ v.first,new_cost });
 			}

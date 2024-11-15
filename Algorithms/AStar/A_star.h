@@ -13,7 +13,7 @@
 #include "profile.h"
 
 
-const int64_t kInfinity = 9223372036854775807;
+const int64_t Infinity = std::numeric_limits<int64_t>::max();
 struct DistTo { // simple structure used in Dijkstras algorithms, sorted by dist
 	DistTo() : vertex_(0), Dist_(0) {};
 	DistTo(int v, int64_t d) :vertex_(v), Dist_(d) {};
@@ -48,7 +48,7 @@ struct Vertex {	// Vertex of the graph used for Query process
 	Point coord;
 	int prev;
 
-	Vertex() :d(kInfinity), coord({0.,0.}), prev(-1) {}
+	Vertex() :d(Infinity), coord({0.,0.}), prev(-1) {}
 };
 
 

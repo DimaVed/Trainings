@@ -127,7 +127,7 @@ void TestAll() {
     RUN_TEST(tr, TestAssignments);
     RUN_TEST(tr, TestArithmetics);
     RUN_TEST(tr, TestVariablesArePointers);
-
+    RunMythonProgram(std::cin, std::cout);
 
 
 
