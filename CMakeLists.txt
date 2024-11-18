@@ -1,3 +1,5 @@
+
+
 function(get_all_targets var)
     set(targets)
     get_all_targets_recursive(targets ${CMAKE_CURRENT_SOURCE_DIR})
@@ -14,35 +16,39 @@ macro(get_all_targets_recursive targets dir)
     list(APPEND ${targets} ${current_targets})
 endmacro()
 
-
-# Установка минимальной версии CMake 
-
-
 cmake_minimum_required (VERSION 3.20)
 project (Training LANGUAGES CXX)
 
+#include(CTest)
+enable_testing()
 
+set(VCPKG_TARGET_TRIPLET x64-windows-static)
+include( $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
+include_directories( ${INCLUDE_DIRECTORIES}  $ENV{VCPKG_ROOT}/installed/x64-windows-static/include/ )
+find_package(Catch2 CONFIG REQUIRED)
+include(Catch)
 add_subdirectory (Algorithms)
 add_subdirectory (CppFeatures)
 add_subdirectory (ParaPython)
-
+ 
 
 get_all_targets(all_targets)
 
 foreach(exec  ${all_targets})
     message( STATUS ${exec})
-	# Установка 20 стандарта С++
-	set_target_properties (${exec} PROPERTIES CXX_STANDARD 20 CMAKE_CXX_STANDARD_REQUIRED ON)
-	# Установка статической линковки для MSVC
-	set_property (TARGET ${exec} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	# Установка флага многопоточной компиляции
-	if (MSVC)
-	target_compile_options (${exec} PRIVATE "/MP")
-	endif()
-	if(MSVC)
+       # Установка 20 стандарта С++
+       set_target_properties (${exec} PROPERTIES CXX_STANDARD 20 CMAKE_CXX_STANDARD_REQUIRED ON)
+       # Установка статической линковки для MSVC
+       set_property (TARGET ${exec} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+       # Установка флага многопоточной компиляции
+       if (MSVC)
+       target_compile_options (${exec} PRIVATE "/MP")
+       endif()
+       if(MSVC)
    target_compile_options(${exec} PRIVATE /W4 )
-	else()
+       else()
     target_compile_options(${exec} PRIVATE -Wall -Wextra -Wpedantic -Werror)
-	endif()
-	
+       endif()
+       target_link_libraries(${exec}  PRIVATE Catch2::Catch2 Catch2::Catch2WithMain)
+
 endforeach()

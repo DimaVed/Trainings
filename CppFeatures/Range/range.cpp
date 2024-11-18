@@ -2,6 +2,7 @@
 #include <vector>
 #include <iterator>
 #include <iostream>
+#include <catch2/catch_test_macros.hpp>
 //simple range class
 
 
@@ -53,6 +54,9 @@ public:
 	size_t size() const {
 		return pages.size();
 	}
+	Range<T> operator [](size_t i) const {
+		return pages[i];
+	}
 private:
 	std::vector<Range<T>> pages;
 };
@@ -62,17 +66,16 @@ auto Paginate(C& c, size_t page_size) {
 	return Paginator(begin(c), end(c), page_size);
 }
 
-int main() {
+TEST_CASE ("Factorials are computed", "[pagination]") {
 
 	std::vector <int> data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	auto ranges = Paginate(data,4);
-	for (Range<std::vector<int>::iterator> range : ranges) {
-		for (auto item : range) {
-			std::cout << item << " ";
-		}
-		std::cout << "\n";
-	}
+	REQUIRE(ranges.size() == 3);
+	CHECK(std::vector <int> {ranges[0].begin(), ranges[0].end() } == std::vector <int> {1, 2, 3, 4});
+	CHECK(std::vector <int> {ranges[1].begin(), ranges[1].end() } == std::vector <int> {5, 6, 7, 8});
+	CHECK(std::vector <int> {ranges[2].begin(), ranges[2].end() } == std::vector <int> {9, 10});
 
-	return 0;
+
 
 }
+

@@ -1,6 +1,7 @@
 #include <cmath>
 #include <assert.h>
-
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
 #define CPP20  true
 
 bool AreEqual(double const d1, double const d2, double const epsilon = 0.001)
@@ -200,8 +201,11 @@ namespace pressure
 	}
 }
 
-int main( )
-{
+TEST_CASE ("Pressure conversion", "[operator overloads]") {
+
+	using namespace   Catch::Matchers;
+	//REQUIRE_THAT(b, Catch::Matchers::WithinRel(a, std::numeric_limits<double>::epsilon()));
+
 	using namespace pressure;
 
 	auto p1{ 1e+5_Pa };
@@ -213,29 +217,27 @@ int main( )
 
 	{
 		auto ppa = PressureCast<scale::Pa>(p2);
-		assert(p1 == ppa);
+		REQUIRE_THAT(double (p1), WithinRel(double (ppa), 1e-8));
 	}
 	{
 		auto p_mpa = PressureCast<scale::MPa>(p1);
-		assert((p2 == p_mpa));
+		REQUIRE_THAT(double(p2), WithinRel(double(p_mpa), 1e-8));
 	}
 	{
 		auto pkgfmm = PressureCast<scale::KgfperMm>(p2);
-		assert((p3 == pkgfmm));
+		REQUIRE_THAT(double(p3), WithinRel(double(pkgfmm), 1e-8));
+		
 	}
 	{
 		auto pkgfm = PressureCast<scale::KgfperM>(p1);
-		assert((p4 == pkgfm));
+		CHECK_THAT(double(p4), WithinRel(double(pkgfm), 1e-8));
 	}
 	{
-		assert(p1 < p5);
-	}
-	{
-		assert(p1 != p5);
-	}
-	{
-		assert(p1 <= p5);
+		// Работа оператора <=>
+		CHECK(p1 < p5);
+		CHECK(p1 != p5);
+		CHECK(p1 <= p5);
 	}
 
-	return 0;
+
 }

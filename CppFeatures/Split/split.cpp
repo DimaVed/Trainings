@@ -6,6 +6,9 @@
 #include <string_view>
 #include <vector>
 #include <sstream>
+#include <catch2/catch_test_macros.hpp>
+
+
 //stl algorithm style split alogrithm
 template <typename InIt, typename OutIt, typename T, typename F>
 InIt split(InIt it, InIt end_it, OutIt out_it, T split_val, F bin_func)
@@ -17,6 +20,11 @@ if (slice_end == end_it) { return end_it; }
 it = next(slice_end);
 }
 return it;
+}
+
+TEST_CASE("Factorials are computed", "[factorial]") {
+    REQUIRE(1 == 1);
+   
 }
 
 std::string_view Strip(std::string_view s) {
@@ -42,29 +50,31 @@ std::vector<std::string> SplitIntoWords(const std::string& line) {
     return { std::istream_iterator<std::string>(words_input), std::istream_iterator<std::string>() };
 }
 
-
-
-int main()
-{
-
-// Stl styl split algo
-const std::string s {"a-b-c-d-e-f-g"};
-auto binfunc ([](auto it_a, auto it_b) {
-return std::string(it_a, it_b);
-});
-std::list<std::string> l;
-split(begin(s), end(s), std::back_inserter(l), '-', binfunc);
-std::copy(begin(l), end(l), std::ostream_iterator<std::string>{std::cout, " "});
-std::cout << "\n";
-// Stringview split algo
-auto res = SplitBy(s, '-');
-std::copy(std::begin(res), std::end(res), std::ostream_iterator<std::string_view>{std::cout, " "});
-std::cout << "\n";
-//Split by spaces (1 or more)
-const std::string spaces_s{ "  a b c   d   e f g" };
-auto words = SplitIntoWords(spaces_s);
-std::copy(begin(words), end(words), std::ostream_iterator<std::string>{std::cout, " "});
-
-return 0;
+TEST_CASE("Stl style split", "[Stl style]") {
+    const std::string s{ "a-b-c-d-e-f-g" };
+    auto binfunc([](auto it_a, auto it_b) {
+        return std::string(it_a, it_b);
+        });
+    std::list<std::string> l;
+    split(begin(s), end(s), std::back_inserter(l), '-', binfunc);
+    std::list <std::string> ans{ "a", "b", "c", "d", "e", "f", "g" };
+    CHECK(l == ans);
 }
 
+TEST_CASE("Split into words", "[Words]") {
+    std::vector <std::string> ans{ "a", "b", "c", "d", "e", "f", "g" };
+    //Split by spaces (1 or more)
+    const std::string spaces_s{ "  a b c   d   e f g" };
+    auto words = SplitIntoWords(spaces_s);
+   
+    CHECK(words == ans);
+}
+TEST_CASE("String view split", "[string_view]") {
+    const std::string s{ "a-b-c-d-e-f-g" };
+    std::vector <std::string_view> ans{ "a", "b", "c", "d", "e", "f", "g" };
+    // Stringview split algo
+    auto res = SplitBy(s, '-');
+  
+
+    CHECK(res == ans);
+}

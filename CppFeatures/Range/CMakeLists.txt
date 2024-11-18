@@ -7,5 +7,8 @@ project(
 
 
 file (GLOB_RECURSE  Src  *.cpp  *.h )
-add_executable(Range  ${Src} )
 
+
+set (exec Range)
+add_executable(${exec}  ${Src} )
+catch_discover_tests(${exec})

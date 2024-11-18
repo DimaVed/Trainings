@@ -1,43 +1,47 @@
 #include "Contraction.h"
 #include "test_runner.h"
 #include "profile.h"
+#include <catch2/catch_test_macros.hpp>
 
-void TestLineGraphAfterContraction() {
+
+TEST_CASE("TestLineGraphAfterContraction", "[Contraction]")
+ {
   std::ifstream graph_file("Test6.txt");// One direction line graph
   Graph g;
   g.Parse(graph_file);
   g.Preprocess();
-  AssertEqual(g.ComputeDistance(1, 5), 2, " 0 to 0");
+  CHECK(g.ComputeDistance(1, 5)== 2);
 
 }
 
-void Test12VertextGpraph() {
+TEST_CASE("Test12VertextGpraph", "[Contraction]") {
   std::ifstream graph_file("Test1.txt");
   Graph g;
   g.Parse(graph_file);
   g.Preprocess();
-  AssertEqual(g.ComputeDistance(0, 0), 0, " 0 to 0");
-  AssertEqual(g.ComputeDistance(1, 1), 0, " 1 to 1");
-  AssertEqual(g.ComputeDistance(0, 1), 1, " 0 to 1");
-  AssertEqual(g.ComputeDistance(1, 0), -1, " 1 to 0");
+  CHECK(g.ComputeDistance(0, 0) == 0);
+  CHECK(g.ComputeDistance(1, 1) == 0);
+  CHECK(g.ComputeDistance(0, 1)== 1);
+  CHECK(g.ComputeDistance(1, 0)== -1);
 }
-void Test2() {
+TEST_CASE("Test2", "[Contraction]")
+{
   std::ifstream graph_file("Test2.txt");
   Graph g;
   g.Parse(graph_file);
   g.Preprocess();
-  AssertEqual(g.ComputeDistance(0, 2), 3, " 0 to 2");
+  CHECK(g.ComputeDistance(0, 2)== 3);
 }
-void Test3() {
+TEST_CASE("Test3", "[Contraction]") {
   std::ifstream graph_file("Test3.txt");
   Graph g;
   g.Parse(graph_file);
   g.Preprocess();
-  AssertEqual(g.ComputeDistance(2, 0), 1, " 0to 0");
-  AssertEqual(g.ComputeDistance(3, 0), 2, " 3 to 0");
+  CHECK(g.ComputeDistance(2, 0)== 1);
+  CHECK(g.ComputeDistance(3, 0)== 2);
 }
 
-void Test4() {
+TEST_CASE("Test4", "[Contraction]") {
   std::ifstream graph_file("Test4.txt");
   Graph g;
   g.Parse(graph_file);
@@ -75,13 +79,13 @@ void Test4() {
       answer << g.ComputeDistance(u - 1, v - 1) << '\n';
     }
   }
-  AssertEqual(g.ComputeDistance(22, 88), 1616, " 0 to 0");
-  AssertEqual(g.ComputeDistance(16, 56), 4633, " 3 to 0");
-  AssertEqual(g.ComputeDistance(13, 84), 4534, " 13 to 84");
-  AssertEqual(g.ComputeDistance(24, 8), 11574, " 13 to 84");
+  CHECK(g.ComputeDistance(22, 88)== 1616);
+  CHECK(g.ComputeDistance(16, 56)== 4633);
+  CHECK(g.ComputeDistance(13, 84)== 4534);
+  CHECK(g.ComputeDistance(24, 8)== 11574);
 }
-
-void TestNewYork() {
+TEST_CASE("TestNewYork", "[Contraction]")
+ {
   std::ifstream graph_file("NYGRAPH.txt");
   Graph g;
   g.Parse(graph_file);
@@ -91,7 +95,7 @@ void TestNewYork() {
   {
     g.Preprocess();
   }
-  AssertEqual(g.ComputeDistance(0, 1), 803, " 1 to 2");
+  CHECK(g.ComputeDistance(0, 1)== 803);
 
   LOG_DURATION("WO")
   {
@@ -108,44 +112,31 @@ void TestNewYork() {
 
 }
 
-void Test5() {
+TEST_CASE("Test5", "[Contraction]") {
   std::ifstream graph_file("Test5.txt");
   Graph g;
   g.Parse(graph_file);
   g.Preprocess();
-  AssertEqual(g.ComputeDistance(3, 2), 2, " 3 to 2");
+  CHECK(g.ComputeDistance(3, 2)== 2);
 }
 
-void Test6() {
-  std::ifstream graph_file("Test5.txt");
-  Graph g;
-  g.Parse(graph_file);
 
-  g.Preprocess();
-  AssertEqual(g.ComputeDistance(3, 2), 2, " 3 to 2");
-}
-
+#ifdef  false
 int main() {
-  std::cin.tie(nullptr);
-  std::ios::sync_with_stdio(false);
-  TestRunner tr;
-  tr.RunTest(Test5, "Test5");
-  tr.RunTest(Test6, "Test6");
-  tr.RunTest(TestLineGraphAfterContraction, "TestLineGraph");
-  tr.RunTest(Test12VertextGpraph, "Test1");
-  tr.RunTest(Test2, "Test2");
-  tr.RunTest(Test3, "Test3");
-  tr.RunTest(Test4, "Test4");
-  tr.RunTest(TestNewYork, "NewYorkTest");
-  Graph g;
-  g.Parse();
-  g.Preprocess();
-  std::cout << "Ready" << std::endl;
-  int t;
-  std::cin >> t;
-  for (int i = 0; i < t; ++i) {
-    int u, v;
-    std::cin >> u >> v;
-    std::cout << g.ComputeDistance(u - 1, v - 1) << '\n';
-  }
+    std::cin.tie(nullptr);
+    std::ios::sync_with_stdio(false);
+
+    Graph g;
+    g.Parse();
+    g.Preprocess();
+    std::cout << "Ready" << std::endl;
+    int t;
+    std::cin >> t;
+    for (int i = 0; i < t; ++i) {
+        int u, v;
+        std::cin >> u >> v;
+        std::cout << g.ComputeDistance(u - 1, v - 1) << '\n';
+    }
 }
+#endif // 0
+

@@ -7,5 +7,9 @@ project(
 
 
 file (GLOB_RECURSE  Src  *.cpp  *.h )
-add_executable(ParaPython  ${Src} )
+
+
+
+set (exec ParaPython)
+add_executable(${exec}  ${Src} )
 

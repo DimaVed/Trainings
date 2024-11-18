@@ -6,6 +6,9 @@ project(
 )
 
 
+
+
 file (GLOB_RECURSE  Src  *.cpp  *.h )
-add_executable(OperatorOverload  ${Src} )
+set (exec OperatorOverload)
+add_executable(${exec}  ${Src} )
 

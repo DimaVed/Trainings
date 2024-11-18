@@ -7,5 +7,6 @@ project(
 
 
 file (GLOB_RECURSE  Src  *.cpp  *.h )
-add_executable(AStar  ${Src} )
+set (exec AStar)
+add_executable(${exec}  ${Src} )
 

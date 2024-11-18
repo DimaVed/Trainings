@@ -7,5 +7,8 @@ project(
 
 
 file (GLOB_RECURSE  Src  *.cpp  *.h )
-add_executable(Split  ${Src} )
 
+ set (exec Split)
+add_executable(${exec}  ${Src} )
+
+catch_discover_tests(${exec})

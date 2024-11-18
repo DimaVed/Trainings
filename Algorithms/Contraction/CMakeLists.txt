@@ -5,6 +5,8 @@ project(
     LANGUAGES CXX
 )
 
-file (GLOB_RECURSE  Src  *.cpp  *.h )
-add_executable(Contraction  ${Src} )
 
+file (GLOB_RECURSE  Src  *.cpp  *.h )
+set (exec Contraction)
+add_executable (${exec} ${Src})
+catch_discover_tests(${exec})
