@@ -22,10 +22,7 @@ it = next(slice_end);
 return it;
 }
 
-TEST_CASE("Factorials are computed", "[factorial]") {
-    REQUIRE(1 == 1);
-   
-}
+
 
 std::string_view Strip(std::string_view s) {
     while (!s.empty() && isspace(s.front())) {
@@ -50,7 +47,7 @@ std::vector<std::string> SplitIntoWords(const std::string& line) {
     return { std::istream_iterator<std::string>(words_input), std::istream_iterator<std::string>() };
 }
 
-TEST_CASE("Stl style split", "[Stl style]") {
+TEST_CASE("Split Stl style split", "[Stl style]") {
     const std::string s{ "a-b-c-d-e-f-g" };
     auto binfunc([](auto it_a, auto it_b) {
         return std::string(it_a, it_b);
@@ -61,7 +58,7 @@ TEST_CASE("Stl style split", "[Stl style]") {
     CHECK(l == ans);
 }
 
-TEST_CASE("Split into words", "[Words]") {
+TEST_CASE( "Split Split into words", "[Words]") {
     std::vector <std::string> ans{ "a", "b", "c", "d", "e", "f", "g" };
     //Split by spaces (1 or more)
     const std::string spaces_s{ "  a b c   d   e f g" };
@@ -69,7 +66,7 @@ TEST_CASE("Split into words", "[Words]") {
    
     CHECK(words == ans);
 }
-TEST_CASE("String view split", "[string_view]") {
+TEST_CASE("Split String view split", "[string_view]") {
     const std::string s{ "a-b-c-d-e-f-g" };
     std::vector <std::string_view> ans{ "a", "b", "c", "d", "e", "f", "g" };
     // Stringview split algo

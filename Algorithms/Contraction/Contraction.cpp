@@ -1,6 +1,5 @@
 ﻿#include "Contraction.h"
-#include "test_runner.h"
-#include "profile.h"
+
 
 bool operator<(const DistTo &lhs, const DistTo &rhs) {
   return lhs.Dist_ < rhs.Dist_;
@@ -29,14 +28,14 @@ void Graph::Parse(std::istream &source) {
 
 void Graph::Preprocess() {
   std::priority_queue<Importance, std::vector<Importance>, std::greater<Importance>> h;
-  std::ofstream log("log.txt");
+ 
 
   for (size_t i = 0; i < adj.size(); i++) {
     h.push({int(i), GetImportance(i)});
   }
 
   while (!h.empty()) {
-    log << h.size() << '\n';
+   
     auto least = h.top();
     h.pop();
     auto currentimportance = GetImportance(least.vertex_);

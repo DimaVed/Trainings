@@ -1,6 +1,5 @@
 ﻿#include "A_star.h"
-#include "test_runner.h"
-#include "profile.h"
+
 #include <numeric>
 
 

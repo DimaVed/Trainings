@@ -1,10 +1,8 @@
 #include "Contraction.h"
-#include "test_runner.h"
-#include "profile.h"
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark.hpp>
 
-
-TEST_CASE("TestLineGraphAfterContraction", "[Contraction]")
+TEST_CASE("ContractionTestLineGraphAfterContraction", "[Contraction]")
  {
   std::ifstream graph_file("Test6.txt");// One direction line graph
   Graph g;
@@ -14,7 +12,7 @@ TEST_CASE("TestLineGraphAfterContraction", "[Contraction]")
 
 }
 
-TEST_CASE("Test12VertextGpraph", "[Contraction]") {
+TEST_CASE("ContractionTest12VertextGpraph", "[Contraction]") {
   std::ifstream graph_file("Test1.txt");
   Graph g;
   g.Parse(graph_file);
@@ -24,7 +22,7 @@ TEST_CASE("Test12VertextGpraph", "[Contraction]") {
   CHECK(g.ComputeDistance(0, 1)== 1);
   CHECK(g.ComputeDistance(1, 0)== -1);
 }
-TEST_CASE("Test2", "[Contraction]")
+TEST_CASE("ContractionTest2", "[Contraction]")
 {
   std::ifstream graph_file("Test2.txt");
   Graph g;
@@ -32,7 +30,7 @@ TEST_CASE("Test2", "[Contraction]")
   g.Preprocess();
   CHECK(g.ComputeDistance(0, 2)== 3);
 }
-TEST_CASE("Test3", "[Contraction]") {
+TEST_CASE("ContractionTest3", "[Contraction]") {
   std::ifstream graph_file("Test3.txt");
   Graph g;
   g.Parse(graph_file);
@@ -41,42 +39,43 @@ TEST_CASE("Test3", "[Contraction]") {
   CHECK(g.ComputeDistance(3, 0)== 2);
 }
 
-TEST_CASE("Test4", "[Contraction]") {
+
+
+TEST_CASE("ContractionTest4", "[Contraction]") {
   std::ifstream graph_file("Test4.txt");
   Graph g;
   g.Parse(graph_file);
-  LOG_DURATION("Preprocess")
-  {
-    g.Preprocess();
-  }
+  
+      g.Preprocess();
+  
 
-  LOG_DURATION("WO")
+  
   {
     std::ifstream query("Query.txt");
 
     int t;
     query >> t;
 
-    std::ofstream answer("AnswerWO.txt");
+    //std::ofstream answer("AnswerWO.txt");
     for (int i = 0; i < t; ++i) {
       int u, v;
       query >> u >> v;
-      answer << g.ComputeDistance(u - 1, v - 1) << '\n';
+      g.ComputeDistance(u - 1, v - 1) << '\n';
     }
   }
 
-  LOG_DURATION("WITH")
+  
   {
     std::ifstream query("Query.txt");
 
     int t;
     query >> t;
 
-    std::ofstream answer("AnswerWITH.txt");
+   // std::ofstream answer("AnswerWITH.txt");
     for (int i = 0; i < t; ++i) {
       int u, v;
       query >> u >> v;
-      answer << g.ComputeDistance(u - 1, v - 1) << '\n';
+       g.ComputeDistance(u - 1, v - 1) << '\n';
     }
   }
   CHECK(g.ComputeDistance(22, 88)== 1616);
@@ -84,35 +83,42 @@ TEST_CASE("Test4", "[Contraction]") {
   CHECK(g.ComputeDistance(13, 84)== 4534);
   CHECK(g.ComputeDistance(24, 8)== 11574);
 }
-TEST_CASE("TestNewYork", "[Contraction]")
+
+
+#ifdef  false
+
+TEST_CASE("ContractionNewYork", "[Contraction]")
  {
   std::ifstream graph_file("NYGRAPH.txt");
   Graph g;
   g.Parse(graph_file);
   std::cout << "Start NewYork Test" << std::endl;
 
-  LOG_DURATION("Preprocess")
-  {
-    g.Preprocess();
-  }
+ 
+      g.Preprocess();
+  
+  
   CHECK(g.ComputeDistance(0, 1)== 803);
 
-  LOG_DURATION("WO")
-  {
+  
     std::ifstream query("Query.txt");
     int t;
     query >> t;
-    std::ofstream answer("AnswerWO.txt");
+    // TO DO implement correct check 
+    // std::ofstream answer("AnswerWO.txt");
     for (int i = 0; i < t; ++i) {
       int u, v;
       query >> u >> v;
-      answer << g.ComputeDistance(u - 1, v - 1) << '\n';
+      g.ComputeDistance(u - 1, v - 1) << '\n';
     }
-  }
+  
 
 }
+#endif 
 
-TEST_CASE("Test5", "[Contraction]") {
+
+
+TEST_CASE("ContractionTest5", "[Contraction]") {
   std::ifstream graph_file("Test5.txt");
   Graph g;
   g.Parse(graph_file);

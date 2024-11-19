@@ -9,8 +9,7 @@
 #include <cmath>
 #include<fstream>
 #include <algorithm>
-#include "test_runner.h"
-#include "profile.h"
+
 
 
 const int64_t Infinity = std::numeric_limits<int64_t>::max();

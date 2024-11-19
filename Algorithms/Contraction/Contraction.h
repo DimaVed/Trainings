@@ -9,8 +9,7 @@
 #include <cmath>
 #include<fstream>
 #include <algorithm>
-#include "test_runner.h"
-#include "profile.h"
+
 
 const int64_t kInfinity = 9223372036854775807;
 struct DistTo { // simple structure used in Dijkstras algorithms, sorted by dist
