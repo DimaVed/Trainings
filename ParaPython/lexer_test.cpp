@@ -4,12 +4,12 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
+
 
 namespace Parse {
 
 void TestSimpleAssignment() {
-  istringstream input("x = 42\n");
+  std::istringstream input("x = 42\n");
   Lexer lexer(input);
 
   ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::Id{"x"}));
@@ -22,7 +22,7 @@ void TestSimpleAssignment() {
 }
 
 void TestKeywords() {
-  istringstream input("class return if else def print or None and not True False");
+  std::istringstream input("class return if else def print or None and not True False");
   Lexer lexer(input);
 
   ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::Class{}));
@@ -40,7 +40,7 @@ void TestKeywords() {
 }
 
 void TestNumbers() {
-  istringstream input("42 15 -53");
+  std::istringstream input("42 15 -53");
   Lexer lexer(input);
 
   ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::Number{42}));
@@ -51,7 +51,7 @@ void TestNumbers() {
 }
 
 void TestIds() {
-  istringstream input("x    _42 big_number   Return Class  dEf");
+  std::istringstream input("x    _42 big_number   Return Class  dEf");
   Lexer lexer(input);
 
   ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::Id{"x"}));
@@ -63,7 +63,7 @@ void TestIds() {
 }
 
 void TestStrings() {
-  istringstream input(R"('word' "two words" 'long string with a double quote " inside' "another long string with single quote ' inside")");
+ std::istringstream input(R"('word' "two words" 'long string with a double quote " inside' "another long string with single quote ' inside")");
   Lexer lexer(input);
 
   ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::String{"word"}));
@@ -77,7 +77,7 @@ void TestStrings() {
 }
 
 void TestOperations() {
-  istringstream input("+-*/= > < != == <> <= >=");
+ std::istringstream input("+-*/= > < != == <> <= >=");
   Lexer lexer(input);
 
   ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::Char{'+'}));
@@ -96,7 +96,7 @@ void TestOperations() {
 }
 
 void TestIndentsAndNewlines() {
-  istringstream input(R"(
+ std::istringstream input(R"(
 no_indent
   indent_one
     indent_two
@@ -143,7 +143,7 @@ no_indent
 }
 
 void TestEmptyLinesAreIgnored() {
-  istringstream input(R"(
+  std::istringstream input(R"(
 x = 1
   y = 2
 
@@ -173,7 +173,7 @@ x = 1
 }
 
 void TestMythonProgram() {
-  istringstream input(R"(
+  std::istringstream input(R"(
 x = 4
 y = "hello"
 
@@ -275,7 +275,7 @@ print str(p)
 }
 
 void TestExpect() {
-  istringstream is("bugaga");
+  std::istringstream is("bugaga");
   Lexer lex(is);
 
   ASSERT_DOESNT_THROW(lex.Expect<TokenType::Id>());
@@ -286,7 +286,7 @@ void TestExpect() {
 }
 
 void TestExpectNext() {
-  istringstream is("+ bugaga + def 52");
+ std::istringstream is("+ bugaga + def 52");
   Lexer lex(is);
 
   ASSERT_EQUAL(lex.CurrentToken(), Token(TokenType::Char{'+'}));
@@ -298,7 +298,7 @@ void TestExpectNext() {
 
 void TestAlwaysEmitsNewlineAtTheEndOfNonemptyLine() {
   {
-    istringstream is("a b");
+    std::istringstream is("a b");
     Lexer lexer(is);
 
     ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::Id{"a"}));
@@ -309,7 +309,7 @@ void TestAlwaysEmitsNewlineAtTheEndOfNonemptyLine() {
     ASSERT_EQUAL(lexer.NextToken(), Token(TokenType::Eof{}));
   }
   {
-    istringstream is("+");
+    std::istringstream is("+");
     Lexer lexer(is);
 
     ASSERT_EQUAL(lexer.CurrentToken(), Token(TokenType::Char{'+'}));

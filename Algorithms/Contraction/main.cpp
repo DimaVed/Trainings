@@ -60,7 +60,7 @@ TEST_CASE("ContractionTest4", "[Contraction]") {
     for (int i = 0; i < t; ++i) {
       int u, v;
       query >> u >> v;
-      g.ComputeDistance(u - 1, v - 1) << '\n';
+       g.ComputeDistance(u - 1, v - 1) << '\n';
     }
   }
 
@@ -75,7 +75,7 @@ TEST_CASE("ContractionTest4", "[Contraction]") {
     for (int i = 0; i < t; ++i) {
       int u, v;
       query >> u >> v;
-       g.ComputeDistance(u - 1, v - 1) << '\n';
+        g.ComputeDistance(u - 1, v - 1) << '\n';
     }
   }
   CHECK(g.ComputeDistance(22, 88)== 1616);

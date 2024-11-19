@@ -4,6 +4,7 @@
 #include <catch2/benchmark/catch_benchmark.hpp>
 
 namespace fs = std::filesystem;
+// TO DO добавить ассерты
 TEST_CASE ( "AStar Test1", "[Astar]")
 {
 	std::ifstream source("AStar01");

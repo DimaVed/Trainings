@@ -6,8 +6,6 @@
 #include <optional>
 #include <sstream>
 
-using namespace std;
-
 namespace Runtime {
 
 bool Equal(ObjectHolder lhs, ObjectHolder rhs)
@@ -22,7 +20,7 @@ bool Equal(ObjectHolder lhs, ObjectHolder rhs)
     }
     else
     {
-        throw  runtime_error ("Equal error");
+        throw  std::runtime_error ("Equal error");
     }
 
 }
@@ -39,7 +37,7 @@ bool Less(ObjectHolder lhs, ObjectHolder rhs)
     }
     else
     {
-        throw  runtime_error ("Less error");
+        throw  std::runtime_error ("Less error");
     }
 }
 
