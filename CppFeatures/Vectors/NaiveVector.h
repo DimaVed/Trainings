@@ -10,7 +10,13 @@ namespace nv {
         size_t sz = 0;
 
     public:
-        
+        void swap(vector& other) noexcept {
+
+            std::swap(buf, other.buf);
+            std::swap(cp, other.cp);
+            std::swap(sz, other.sz);
+
+        }
         // геттеры
         size_t capacity() const {
             return cp;
@@ -23,6 +29,31 @@ namespace nv {
         }
         //Конструкторы
         vector() = default;
+        // Конструктор от списка инициализации
+        vector(std::initializer_list<T> data) {
+            reserve(data.size());
+            for (const auto& item : data) {
+                push_back(item);
+            }
+        }
+
+        // Копирующие конструкторы
+        vector(const vector &  other) {
+
+        }
+        vector(const vector && other) {
+
+        }
+        // Перемещающий оператор присваивания
+        vector& operator = (vector&& other) noexcept {
+            Swap(other);
+            return *this;
+        }
+
+        vector& operator = (const vector& other) noexcept {
+            return *this;
+        }
+        
 
         // Манипуляции с размером
         void reserve(size_t n) {
@@ -74,7 +105,7 @@ namespace nv {
         // Деструктор
 
         ~vector() {
-            operator delete(buf);
+            delete[]buf;
         }
         // итераторы 
         using iterator = T*;
