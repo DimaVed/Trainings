@@ -6,8 +6,8 @@
 
 
 struct constructor_t {
-	 int val;
-	 inline static int created;
+	int val;
+	inline static int created;
 	constructor_t() {
 		created++;
 		val = 0;
@@ -16,18 +16,18 @@ struct constructor_t {
 		created++;
 		val = data;
 	}
-	~constructor_t (){
+	~constructor_t() {
 		created--;
 	}
 
 
 
-	
+
 };
 
 
 template <typename V>
-void StandardCheck(V & v) {
+void StandardCheck(V& v) {
 	//constructor_t::created = 0;
 	v.resize(10);
 	std::iota(v.begin(), v.end(), -4);
@@ -49,7 +49,7 @@ void StandardCheck(V & v) {
 	v.push_back(-4);
 	CHECK(v.size() == 2);
 	CHECK(v.back() == -4);
-	
+
 	v.push_back(-3);
 	CHECK(v.size() == 3);
 	CHECK(v.back() == -3);
@@ -76,22 +76,39 @@ void ConstructDestrucCheck(V& v) {
 
 template <typename V>
 void MoveCopyCheck(V& v) {
-	  V v1{ 1,2,3,4,5,6,7,8,9,10 };
+	V v1{ 1,2,3,4,5,6,7,8,9,10 };
 
 	// –абота копирующего конструктора копировани€
-	auto v2 = v;
+	auto v2 = v1;
 	CHECK(v2.size() == 10);
 	CHECK(v2.capacity() == 10);
-	for (int i = 0; i < v.size(); ++i) {
-		v[i] = v2[i];
+	for (int i = 0; i < v1.size(); ++i) {
+		CHECK(v1[i] == v2[i]);
 	}
 	// –абота копирующего оператора присваивани€
 	V v3;
 	v3 = v2;
-	CHECK(v2.size() == 10);
-	CHECK(v2.capacity() == 10);
-	for (int i = 0; i < v.size(); ++i) {
-		v[i] = v2[i];
+	CHECK(v3.size() == 10);
+	CHECK(v3.capacity() == 10);
+	for (int i = 0; i < v1.size(); ++i) {
+		CHECK(v1[i] == v3[i]);
+	}
+	// –абота копирующего оператора присваивани€
+	V v4 = std::move(v3);
+
+	CHECK(v4.size() == 10);
+	CHECK(v4.capacity() == 10);
+	for (int i = 0; i < v1.size(); ++i) {
+		CHECK(v4[i] == v2[i]);
+	}
+	// –абота копирующего оператора присваивани€
+	V v5;
+	v5 = std::move(v4);
+
+	CHECK(v5.size() == 10);
+	CHECK(v5.capacity() == 10);
+	for (int i = 0; i < v1.size(); ++i) {
+		CHECK(v5[i] == v2[i]);
 	}
 
 }
@@ -130,6 +147,14 @@ TEST_CASE("Vectors STL  Construc/Destruct", "[Vectors]") {
 }
 TEST_CASE("Vectors Naive  MoveCopyCheck", "[Vectors]") {
 	nv::vector <int> v;
-	
+	MoveCopyCheck(v);
+}
+TEST_CASE("Vectors RMV  MoveCopyCheck", "[Vectors]") {
+	rmv::vector <int> v;
+	MoveCopyCheck(v);
+}
+
+TEST_CASE("Vectors STL  MoveCopyCheck", "[Vectors]") {
+	rmv::vector <int> v;
 	MoveCopyCheck(v);
 }

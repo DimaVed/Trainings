@@ -32,25 +32,30 @@ namespace nv {
         // Конструктор от списка инициализации
         vector(std::initializer_list<T> data) {
             reserve(data.size());
-            for (const auto& item : data) {
-                push_back(item);
-            }
+            std::copy(data.begin(), data.end(), buf);
+            sz = data.size();
         }
 
         // Копирующие конструкторы
         vector(const vector &  other) {
+            reserve(other.size());
+            std::copy(other.data(), other.data() + other.size(), buf);
+            sz = other.sz;
 
         }
-        vector(const vector && other) {
-
+        vector( vector && other) {
+            swap(other);
         }
         // Перемещающий оператор присваивания
         vector& operator = (vector&& other) noexcept {
-            Swap(other);
+            swap(other);
             return *this;
         }
 
         vector& operator = (const vector& other) noexcept {
+            reserve(other.size());
+            std::copy(other.data(), other.data() + other.size(), buf);
+            sz = other.sz;
             return *this;
         }
         

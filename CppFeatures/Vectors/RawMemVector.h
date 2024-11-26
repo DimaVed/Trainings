@@ -2,6 +2,7 @@
 #include <memory>
 #include <new>
 #include <utility>
+#include <iterator>
 
 // rawMemVector
 namespace rmv {
@@ -98,17 +99,27 @@ namespace rmv {
         }
 
         vector(vector&& other) noexcept {
-            Swap(other);
+            swap(other);
         }
+
+        //  онструктор от списка инициализации
+        vector(std::initializer_list<T> data) {
+            reserve(data.size());
+            for (auto& item : data) {
+                push_back(item);
+            }
+            sz = data.size();
+        }
+
 
         ~vector() {
             std::destroy_n(data.data(), sz);
         }
 
         vector& operator = (const vector& other) {
-            if (other.sz > data.cp) {
+            if (other.sz > data.Capacity()) {
                 vector tmp(other);
-                Swap(tmp);
+                swap(tmp);
             }
             else {
                 for (size_t i = 0; i < sz && i < other.sz; ++i) {
@@ -116,14 +127,14 @@ namespace rmv {
                 }
                 if (sz < other.sz) {
                     std::uninitialized_copy_n(
-                        other.data.buf + sz,
+                        other.data.data() + sz,
                         other.sz - sz,
-                        data.buf + sz
+                        data.data() + sz
                     );
                 }
                 else if (sz > other.sz) {
                     std::destroy_n(
-                        data.buf + other.sz,
+                        data.data() + other.sz,
                         sz - other.sz
                     );
                 }
@@ -133,7 +144,7 @@ namespace rmv {
         }
 
         vector& operator = (vector&& other) noexcept {
-            Swap(other);
+            swap(other);
             return *this;
         }
 
@@ -164,7 +175,7 @@ namespace rmv {
         }
 
         void push_back(const T& elem) {
-            if (sz == data.cp) {
+            if (sz == data.Capacity()) {
                 reserve(sz == 0 ? 1 : sz * 2);
             }
             new (data + sz) T(elem);
