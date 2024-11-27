@@ -78,7 +78,7 @@ ObjectHolder ClassInstance::Call(const std::string& method, const std::vector<Ob
 
 }
 
-Class::Class(std::string name, std::vector<Method> methods, const Class* parent):
+Class::Class(const std::string & name, std::vector<Method> methods, const Class* parent):
     parent_(parent),name_(name)
 {
     for (auto &item:methods)

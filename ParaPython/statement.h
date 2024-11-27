@@ -38,7 +38,7 @@ struct VariableValue : Statement {
   std::vector<std::string> dotted_ids;
 
   explicit VariableValue(std::string var_name);
-  explicit VariableValue(std::vector<std::string> dotted_ids);
+  explicit VariableValue(const std::vector<std::string> & dotted_ids);
   ObjectHolder Execute(Runtime::Closure& closure) override;
 
 };
@@ -100,7 +100,7 @@ struct NewInstance : Statement {
   const Runtime::Class& class_;
   std::vector<std::unique_ptr<Statement>> args;
 
-  NewInstance(const Runtime::Class& class_);
+  explicit NewInstance(const Runtime::Class& class_);
   NewInstance(const Runtime::Class& class_, std::vector<std::unique_ptr<Statement>> args);
   //Runtime::ClassInstance instance;
   ObjectHolder Execute(Runtime::Closure& closure) override;
@@ -108,7 +108,7 @@ struct NewInstance : Statement {
 
 class UnaryOperation : public Statement {
 public:
-  UnaryOperation(std::unique_ptr<Statement> argument) : argument(std::move(argument)) {
+  explicit UnaryOperation(std::unique_ptr<Statement> argument) : argument(std::move(argument)) {
   }
 
 protected:

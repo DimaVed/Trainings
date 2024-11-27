@@ -159,7 +159,7 @@ public:
 
   template <typename T, typename U>
   void Expect(const U& value) const {
-    if (auto& token_value = Expect<T>().value; token_value != value) {
+    if (const auto& token_value = Expect<T>().value; token_value != value) {
       std::ostringstream msg;
       msg << "Expect token with value " << value << " but found " << token_value << " at line "
           << char_reader.CurrentLineNumber();

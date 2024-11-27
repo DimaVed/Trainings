@@ -41,7 +41,7 @@ public:
     return dynamic_cast<const T*>(this->Get());
   }
 
-  explicit operator bool() const;
+   operator bool() const;
 
 private:
   ObjectHolder(std::shared_ptr<Object> data) : data(std::move(data)) {

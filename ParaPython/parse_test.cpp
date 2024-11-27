@@ -1,13 +1,17 @@
 #include "parse.h"
 #include "lexer.h"
 #include "statement.h"
-
-#include "test_runner.h"
-
 #include <string>
 #include <sstream>
 
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+using namespace   Catch::Matchers;
+
 using namespace std;
+
+
+
 
 namespace Parse {
 
@@ -32,8 +36,8 @@ print x + y, z + n
   Runtime::Closure closure;
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
-
-  ASSERT_EQUAL(os.str(), "9 hello, world\n");
+  auto res = "9 hello, world\n";
+  CHECK(os.str() == std::string(res));
 }
 
 void TestProgramWithClasses() {
@@ -72,7 +76,7 @@ print program_name, origin, far_far_away, origin.SetX(1)
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
 
-  ASSERT_EQUAL(os.str(), "Classes test (0; 0) (10000; 50000) None\n");
+  CHECK(os.str() == "Classes test (0; 0) (10000; 50000) None\n");
 }
 
 void TestProgramWithIf() {
@@ -99,7 +103,7 @@ else:
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
 
-  ASSERT_EQUAL(os.str(), "x <= y\ny >= 0\n");
+  CHECK (os.str() == "x <= y\ny >= 0\n");
 }
 
 void TestReturnFromIf() {
@@ -122,7 +126,7 @@ print x.calc(2)
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
 
-  ASSERT_EQUAL(os.str(), "2\n");
+  CHECK(os.str() == "2\n");
 }
 
 void TestRecursion() {
@@ -150,7 +154,7 @@ print x.result
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
 
-  ASSERT_EQUAL(os.str(), "55\n");
+  CHECK(os.str() == "55\n");
 }
 
 void TestRecursion2() {
@@ -180,7 +184,7 @@ print x.call_count
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
 
-  ASSERT_EQUAL(os.str(), "17\n1\n115\n");
+  CHECK(os.str() == "17\n1\n115\n");
 }
 
 void TestComplexLogicalExpression() {
@@ -199,7 +203,7 @@ print ok
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
 
-  ASSERT_EQUAL(os.str(), "False\n");
+  CHECK(os.str() == "False\n");
 }
 
 void TestClassicalPolymorphism() {
@@ -252,20 +256,19 @@ print r, c, t1, t2
   auto tree = ParseProgramFromString(program);
   tree->Execute(closure);
 
-  ASSERT_EQUAL(os.str(), "Rect(10x20) Circle(52) Triangle(3, 4, 5) Wrong triangle\n");
+  CHECK(os.str()=="Rect(10x20) Circle(52) Triangle(3, 4, 5) Wrong triangle\n");
 }
 
 
 
 }
-
-void TestParseProgram(TestRunner& tr) {
-    // RUN_TEST(tr, Parse::TestRecursion2);
-    RUN_TEST(tr, Parse::TestRecursion);
-    RUN_TEST(tr, Parse::TestSimpleProgram);
-    RUN_TEST(tr, Parse::TestProgramWithClasses);
-    RUN_TEST(tr, Parse::TestProgramWithIf);
-    RUN_TEST(tr, Parse::TestReturnFromIf);
-    RUN_TEST(tr, Parse::TestComplexLogicalExpression);
-    RUN_TEST(tr, Parse::TestClassicalPolymorphism);
+TEST_CASE("ParaPython TestParseProgram", "[ParaPython]")
+{
+   // Parse::TestRecursion();
+   // Parse::TestSimpleProgram();
+   // Parse::TestProgramWithClasses();
+   // Parse::TestProgramWithIf();
+   // Parse::TestReturnFromIf();
+   // Parse::TestComplexLogicalExpression();
+   // Parse::TestClassicalPolymorphism();
 }

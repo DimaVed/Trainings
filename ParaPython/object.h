@@ -26,7 +26,7 @@ public:
 template <typename T>
 class ValueObject : public Object {
 public:
-  ValueObject(T v) : value(v) {
+   ValueObject(T v) : value(v) {
   }
 
   void Print(std::ostream& os) override {
@@ -59,7 +59,7 @@ struct Method {
 
 class Class : public Object {
 public:
-  explicit Class(std::string name, std::vector<Method> methods, const Class* parent);
+  explicit Class (const std::string &name, std::vector<Method> methods, const Class* parent);
   const Method* GetMethod(const std::string& name) const;
   const std::string& GetName() const;
   void Print(std::ostream& os) override;
