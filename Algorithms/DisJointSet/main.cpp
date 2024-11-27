@@ -1,6 +1,11 @@
 #include <vector>
 #include <algorithm>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+#include <algorithm>
+#include <numeric>
 
+using namespace   Catch::Matchers;
 
 namespace djs {
 	struct  Vertex {
@@ -73,12 +78,34 @@ namespace kruskal {
 		return res;
 	}
 }
+double TreeWeight(std::vector < kruskal::Edge >& tree) {
 
+	return std::accumulate(tree.begin(), tree.end(), 0., [](auto lhs, auto rhs) { return lhs += rhs.w; });
 
-int main() {
-
-
-	return 0;
 }
 
 
+
+TEST_CASE("DJS  Kruskal  4 node ring graph ", "[DJS]") {
+	std::vector <kruskal::Vertex> graph;
+	graph.push_back({ {1,2.0} });
+	graph.push_back({ {2,3.0} });
+	graph.push_back({ {3,4.0} });
+	graph.push_back({ {0,1.} });
+	auto res = kruskal::KruskalAlgorithm(graph);
+	CHECK_THAT(TreeWeight(res) , WithinRel(6., 1e-8));
+
+}
+
+TEST_CASE("DJS  Kruskal  5 node graph ", "[DJS]") {
+	std::vector <kruskal::Vertex> graph;
+	graph.push_back({ {1,2.0} });
+	graph.push_back({ {2,3.0} });
+	graph.push_back({ {3,4.0} });
+	graph.push_back({ {0,1.}, {4,10.} });
+	graph.push_back({ });
+
+	auto res = kruskal::KruskalAlgorithm(graph);
+	CHECK_THAT(TreeWeight(res), WithinRel(16., 1e-8));
+
+}

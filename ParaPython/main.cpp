@@ -4,8 +4,6 @@
 #include "lexer.h"
 #include "parse.h"
 
-#include "test_runner.h"
-
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -15,8 +13,10 @@
 #include <sstream>
 
 using namespace std;
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+using namespace   Catch::Matchers;
 
-void TestAll();
 
 void RunMythonProgram(istream& input, ostream& output) {
     Ast::Print::SetOutputStream(output);
@@ -28,15 +28,20 @@ void RunMythonProgram(istream& input, ostream& output) {
     program->Execute(closure);
 }
 
+#ifdef RUNPARAPYTHON
 int main() {
-    TestAll();
+
 
     RunMythonProgram(cin, cout);
 
     return 0;
 }
 
-void TestSimplePrints() {
+#endif // RUNPARAPYTHON
+
+
+TEST_CASE("ParaPython TestSimplePrints", "[ParaPython]")
+{
     istringstream input(R"(
 print 57
 print 10, 24, -8
@@ -50,10 +55,11 @@ print None
     ostringstream output;
     RunMythonProgram(input, output);
 
-    ASSERT_EQUAL(output.str(), "57\n10 24 -8\nhello\nworld\nTrue False\n\nNone\n");
+    CHECK(output.str() == "57\n10 24 -8\nhello\nworld\nTrue False\n\nNone\n");
 }
 
-void TestAssignments() {
+TEST_CASE("ParaPython TestAssignments", "[ParaPython]")
+ {
     istringstream input(R"(
 x = 57
 print x
@@ -69,20 +75,21 @@ print x, y
     ostringstream output;
     RunMythonProgram(input, output);
 
-    ASSERT_EQUAL(output.str(), "57\nC++ black belt\nFalse\nNone False\n");
+    CHECK(output.str() == "57\nC++ black belt\nFalse\nNone False\n");
 }
 
-void TestArithmetics()
+TEST_CASE("ParaPython TestArithmetics", "[ParaPython]")
 {
     istringstream input(
 "print 1+2+3+4+5, 1*2*3*4*5, 1-2-3-4-5, 36/4/3, 2*5+10/2"
                 );
     ostringstream output;
     RunMythonProgram(input, output);
-    ASSERT_EQUAL(output.str(), "15 120 -13 3 15\n");
+    CHECK(output.str() == "15 120 -13 3 15\n");
 }
 
-void TestVariablesArePointers() {
+TEST_CASE("ParaPython TestVariablesArePointers", "[ParaPython]")
+{
     istringstream input(R"(
 class Counter:
   def __init__():
@@ -112,23 +119,7 @@ print y.value
     ostringstream output;
     RunMythonProgram(input, output);
 
-    ASSERT_EQUAL(output.str(), "2\n3\n");
+    CHECK(output.str()== "2\n3\n");
 }
 
-void TestAll() {
 
-    TestRunner tr;
-    TestParseProgram(tr);
-    Parse::RunLexerTests(tr);
-    Runtime::RunObjectHolderTests(tr);
-    Runtime::RunObjectsTests(tr);
-    Ast::RunUnitTests(tr);
-    RUN_TEST(tr, TestSimplePrints);
-    RUN_TEST(tr, TestAssignments);
-    RUN_TEST(tr, TestArithmetics);
-    RUN_TEST(tr, TestVariablesArePointers);
-    RunMythonProgram(std::cin, std::cout);
-
-
-
-}

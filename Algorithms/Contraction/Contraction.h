@@ -11,7 +11,7 @@
 #include <algorithm>
 
 
-const int64_t kInfinity = 9223372036854775807;
+const int64_t kInfinity = std::numeric_limits <int64_t>::max();
 struct DistTo { // simple structure used in Dijkstras algorithms, sorted by dist
   DistTo() : vertex_(0), Dist_(0) {};
   DistTo(int v, int64_t d) : vertex_(v), Dist_(d) {};
@@ -32,7 +32,7 @@ bool operator>(const DistTo &lhs, const DistTo &rhs);
 
 struct EVertex {    // Vertex of the graph used for Query process
   std::vector<std::pair<int, int>> AdjList; // adjacency list
-  int64_t d; // ����� ���� // ����������
+  int64_t d; // расстояние то точки
   EVertex() : d(kInfinity) {}
 };
 
@@ -52,8 +52,8 @@ class Graph {
  public:
   const int max_hop;
   int rank;
-  std::vector<Vertex> adj; // �������� ���� �� �������� ��������� ���� � ���� ��������������
-  std::vector<Vertex> AugmentedGraph;// ����������� ���� �� ��������
+  std::vector<Vertex> adj; // Исходный граф
+  std::vector<Vertex> AugmentedGraph;// Модифицированный граф
   std::vector<EVertex> forward;
   std::vector<EVertex> backward;
 
@@ -64,7 +64,7 @@ class Graph {
   int64_t ComputeDistance(int s, int t);
   ~Graph() = default;
  private:
-  void Vipe(const std::vector<int> &changed); // ����� ���������� ������ � ���������� ����������
+  void Vipe(const std::vector<int> &changed); 
   void VipeForward(const std::vector<int> &changed);
   void VipeBackward(const std::vector<int> &changed);
   int GetImportance(int v);
