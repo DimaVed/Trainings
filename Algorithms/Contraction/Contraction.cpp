@@ -19,10 +19,10 @@ void Graph::Parse(std::istream &source) {
   for (size_t i = 0; i < m; ++i) {
     int x, y, w;
     source >> x >> y >> w;
-    adj[x - 1u].outgoing[y - 1] = w;
-    adj[y - 1u].incoming[x - 1] = w;
-    AugmentedGraph[x - 1u].outgoing[y - 1u] = w;
-    AugmentedGraph[y - 1u].incoming[x - 1u] = w;
+    adj[x - 1ull].outgoing[y - 1] = w;
+    adj[y - 1ull].incoming[x - 1] = w;
+    AugmentedGraph[x - 1ull].outgoing[y - 1ull] = w;
+    AugmentedGraph[y - 1ull].incoming[x - 1ull] = w;
   }
 }
 
@@ -31,7 +31,7 @@ void Graph::Preprocess() {
  
 
   for (size_t i = 0; i < adj.size(); i++) {
-    h.push({int(i), GetImportance(i)});
+    h.push({i, GetImportance(i)});
   }
 
   while (!h.empty()) {
@@ -42,7 +42,7 @@ void Graph::Preprocess() {
     if (h.empty()) {
       ContractNode(least.vertex_);
     } else if (currentimportance > h.top().Dist_) {
-      h.push({int(least.vertex_), currentimportance});
+      h.push({least.vertex_, currentimportance});
     } else {
       ContractNode(least.vertex_);
     }
@@ -121,9 +121,9 @@ std::vector<Edge> Graph::FindShorcuts(int v) {
   return res;
 }
 
-std::unordered_set<int> Graph::SearchWitnessPath(int s, int vert,
-                                                 const std::unordered_map<int, int64_t> &ws, int64_t max_dist) {
-  std::unordered_set<int> res;
+std::unordered_set<size_t> Graph::SearchWitnessPath(size_t s, int vert,
+                                                 const std::unordered_map<size_t, int64_t> &ws, int64_t max_dist) {
+  std::unordered_set<size_t> res;
   std::vector<int> changed_nodes;
   int currenthops = 0;
   std::vector<int> changed;
@@ -137,7 +137,7 @@ std::unordered_set<int> Graph::SearchWitnessPath(int s, int vert,
     if (u.vertex_ == size_t(vert)) {
       continue;
     }
-    DistTo current{int(u.vertex_), adj[u.vertex_].d};
+    DistTo current{u.vertex_, adj[u.vertex_].d};
     if (u < current) {
       continue;
     }
@@ -220,7 +220,7 @@ void Graph::AddEdge(const Edge &e) {
   adj[e.to_].incoming[e.from_] = e.weight_;
 }
 
-int64_t Graph::ComputeDistance(int s, int t) {
+int64_t Graph::ComputeDistance(size_t s, size_t t) {
   std::vector<int> changedf;
   std::vector<int> changedb;
   changedb.reserve(1000);
@@ -236,8 +236,8 @@ int64_t Graph::ComputeDistance(int s, int t) {
   hr.push({t, 0});
   changedf.push_back(s);
   changedb.push_back(t);
-  std::unordered_set<int> proc{s};
-  std::unordered_set<int> procr{t};
+  std::unordered_set<size_t> proc{s};
+  std::unordered_set<size_t> procr{t};
   while (!h.empty() || !hr.empty()) {
     if (!h.empty()) {
       if (h.top().Dist_ > estimate) { h.swap(e);
@@ -246,7 +246,7 @@ int64_t Graph::ComputeDistance(int s, int t) {
     if (!h.empty()) {
       auto u = h.top();
       h.pop();
-      DistTo current{int(u.vertex_), forward[u.vertex_].d};
+      DistTo current{u.vertex_, forward[u.vertex_].d};
       if (u < current) { continue;
 }
       proc.insert(u.vertex_);
@@ -259,7 +259,8 @@ int64_t Graph::ComputeDistance(int s, int t) {
 }
         }
       }
-      if (procr.count(u.vertex_) != 0u) {
+     
+      if (procr.count(u.vertex_) != 0ull) {
         if (forward[u.vertex_].d + backward[u.vertex_].d < estimate) {
           estimate = forward[u.vertex_].d + backward[u.vertex_].d;
 }
@@ -273,7 +274,7 @@ int64_t Graph::ComputeDistance(int s, int t) {
     if (!hr.empty()) {
       auto u = hr.top();
       hr.pop();
-      DistTo current{int(u.vertex_), backward[u.vertex_].d};
+      DistTo current{u.vertex_, backward[u.vertex_].d};
       if (u < current) { continue;
 }
       procr.insert(u.vertex_);

@@ -1,6 +1,10 @@
 #include "Contraction.h"
+#pragma warning( push )
+#pragma warning( disable : 26812)
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+
+#pragma warning( pop ) 
 
 TEST_CASE("ContractionTestLineGraphAfterContraction", "[Contraction]")
  {
@@ -60,7 +64,7 @@ TEST_CASE("ContractionTest4", "[Contraction]") {
     for (int i = 0; i < t; ++i) {
       int u, v;
       query >> u >> v;
-       g.ComputeDistance(u - 1, v - 1) << '\n';
+       g.ComputeDistance(u - 1ull, v - 1ull) << '\n';
     }
   }
 
@@ -75,7 +79,7 @@ TEST_CASE("ContractionTest4", "[Contraction]") {
     for (int i = 0; i < t; ++i) {
       int u, v;
       query >> u >> v;
-        g.ComputeDistance(u - 1, v - 1) << '\n';
+        g.ComputeDistance(u - 1ull, v - 1ull) << '\n';
     }
   }
   CHECK(g.ComputeDistance(22, 88)== 1616);
