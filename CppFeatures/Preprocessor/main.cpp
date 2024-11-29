@@ -54,7 +54,7 @@ TEST_CASE("Preprocessor BadMacro", "[Preprocessor]") {
 
 #pragma pop_macro ("Sqr")
 	CHECK(Sqr(3) == 9);
-	CHECK(Sqr(3 + 1) == 16);
+	CHECK(Sqr(3 + 1) != 16);
 }
 
 TEST_CASE("Preprocessor Warning Supress", "[Preprocessor]") {

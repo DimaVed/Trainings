@@ -19,8 +19,8 @@ void Graph::Parse(std::istream &source) {
   for (size_t i = 0; i < m; ++i) {
     int x, y, w;
     source >> x >> y >> w;
-    adj[x - 1ull].outgoing[y - 1] = w;
-    adj[y - 1ull].incoming[x - 1] = w;
+    adj[x - 1ull].outgoing[y - 1ll] = w;
+    adj[y - 1ull].incoming[x - 1ll] = w;
     AugmentedGraph[x - 1ull].outgoing[y - 1ull] = w;
     AugmentedGraph[y - 1ull].incoming[x - 1ull] = w;
   }
@@ -70,8 +70,8 @@ void Graph::VipeBackward(const std::vector<int> &changed) {
   }
 }
 
-int Graph::GetImportance(int v) {
-  int res = 0;
+size_t Graph::GetImportance(size_t v) {
+    size_t res = 0;
   res += GetEdgeDiffernce(v);
   res += GetContractedNeighbours(v);
   res += GetLevel(v);

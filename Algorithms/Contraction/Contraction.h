@@ -14,9 +14,9 @@
 const int64_t kInfinity = std::numeric_limits <int64_t>::max();
 struct DistTo { // simple structure used in Dijkstras algorithms, sorted by dist
   DistTo() : vertex_(0), Dist_(0) {};
-  DistTo(size_t v, int64_t d) : vertex_(v), Dist_(d) {};
+  DistTo(size_t v, size_t d) : vertex_(v), Dist_(d) {};
   size_t vertex_;
-  int64_t Dist_;
+  size_t Dist_;
 };
 struct Edge { // Used for shorcut searching
   size_t from_;
@@ -32,14 +32,14 @@ bool operator>(const DistTo &lhs, const DistTo &rhs);
 
 struct EVertex {    // Vertex of the graph used for Query process
   std::vector<std::pair<size_t, size_t>> AdjList; // adjacency list
-  int64_t d; // расстояние то точки
+  size_t d; // расстояние то точки
   EVertex() : d(kInfinity) {}
 };
 
 struct Vertex {     // Vertex of the graph used for Preprocess
   std::unordered_map<size_t, int64_t> outgoing;
   std::unordered_map<size_t, int64_t> incoming;
-  int64_t d; // distance
+  size_t d; // distance
   int hop;
   int rank;
   int level;
@@ -67,7 +67,7 @@ class Graph {
   void Vipe(const std::vector<int> &changed); 
   void VipeForward(const std::vector<int> &changed);
   void VipeBackward(const std::vector<int> &changed);
-  int GetImportance(int v);
+  size_t GetImportance(size_t v);
   void MakeOrderGraphs();
   int GetEdgeDiffernce(int v);
   int GetContractedNeighbours(int v);

@@ -188,6 +188,6 @@ private:
   Token current;
 };
 
-void RunLexerTests(TestRunner& test_runner);
+
 
 } /* namespace Parse */
