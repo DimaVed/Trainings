@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Configure CMake
-      run: generate_project_files.bat
+      run: generate_project_files
 
     - name: Build
       run: build_release.bat
