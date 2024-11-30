@@ -9,7 +9,6 @@ on:
 env:
   BUILD_TYPE: Release
   TARGET: FightClubGame
-  VCPKG_ROOT: ${GITHUB_WORKSPACE}/vcpkg
 
 jobs:
   build:
