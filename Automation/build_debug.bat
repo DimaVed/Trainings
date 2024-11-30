@@ -1,1 +1,1 @@
-build.bat build_debug
+./build.bat build_debug

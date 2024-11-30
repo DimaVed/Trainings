@@ -1,1 +1,1 @@
-build.bat generate
+./build.bat generate

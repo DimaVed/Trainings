@@ -1,1 +1,1 @@
-build.bat clang_format
+./build.bat clang_format

@@ -1,1 +1,1 @@
-build.bat build_release
+./build.bat build_release
