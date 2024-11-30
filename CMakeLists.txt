@@ -27,9 +27,9 @@ include( $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 include_directories( ${INCLUDE_DIRECTORIES}  $ENV{VCPKG_ROOT}/installed/x64-windows-static/include/ )
 find_package(Catch2 CONFIG REQUIRED)
 include(Catch)
-add_subdirectory (Algorithms)
-add_subdirectory (CppFeatures)
-add_subdirectory (ParaPython)
+add_subdirectory (Source/Algorithms)
+add_subdirectory (Source/CppFeatures)
+add_subdirectory (Source/ParaPython)
  
 
 get_all_targets(all_targets)
