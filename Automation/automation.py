@@ -23,7 +23,7 @@ class Action(Enum):
 ##################### manual configuration ####################
 
 class Config:
-    BUILD_FOLDER = "../build"
+    BUILD_FOLDER = "build"
     CMAKE_GENERATOR = "Visual Studio 17 2022" # https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html
     PLATFORM = Platform.X64  # Platform.WIN32
     FRESH = True

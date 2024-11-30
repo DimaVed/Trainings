@@ -25,12 +25,12 @@ jobs:
 
 
     - name: Configure CMake
-      run: ./Automation/generate_project_files.bat
+      run: ./generate_project_files.bat
 
     - name: Build
-      run: ./Automation/build_release.bat
+      run: ./build_release.bat
 
     - name: Test
-      run: ./Automation/test.bat
+      run: ./test.bat
 
     

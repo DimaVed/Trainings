@@ -13,5 +13,7 @@ if "%~1"=="" (
     exit /b 1
 )
 
-python automation.py %~1
+python Automation\automation.py %~1
+
+pause
 
