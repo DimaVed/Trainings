@@ -23,6 +23,7 @@ project (Training LANGUAGES CXX)
 enable_testing()
 
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
+message( STATUS  "Path to vcpkg root" $ENV{VCPKG_ROOT})
 include( $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 include_directories( ${INCLUDE_DIRECTORIES}  $ENV{VCPKG_ROOT}/installed/x64-windows-static/include/ )
 find_package(Catch2 CONFIG REQUIRED)

@@ -1,1 +1,0 @@
-Automation/build.bat build_release

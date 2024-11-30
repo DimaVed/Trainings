@@ -1,5 +1,6 @@
 
 /build
+/vcpkg
 # Created by https://www.toptal.com/developers/gitignore/api/qtcreator,clion,cmake,visualstudiocode,visualstudio,eclipse,vim,emacs,kate
 # Edit at https://www.toptal.com/developers/gitignore?templates=qtcreator,clion,cmake,visualstudiocode,visualstudio,eclipse,vim,emacs,kate
 

@@ -1,1 +1,0 @@
-Automation/build.bat ctest

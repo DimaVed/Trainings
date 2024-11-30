@@ -1,0 +1,1 @@
+build.bat clang_format

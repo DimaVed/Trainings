@@ -17,13 +17,20 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Download VCPKG
+      run: ./Automation/downloadVCPKG.bat
+
+    - name: Install packages
+      run: ./Automation/installPackages.bat
+
+
     - name: Configure CMake
-      run: ./generate_project_files.bat
+      run: ./Automation/generate_project_files.bat
 
     - name: Build
-      run: ./build_release.bat
+      run: ./Automation/build_release.bat
 
     - name: Test
-      run: ./test.bat
+      run: ./Automation/test.bat
 
     
