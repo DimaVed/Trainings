@@ -18,10 +18,10 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Download VCPKG
-      run: ./Automation/downloadVCPKG.bat
+      run: ./downloadVCPKG.bat
 
     - name: Install packages
-      run: ./Automation/installPackages.bat
+      run: ./installPackages.bat
 
 
     - name: Configure CMake

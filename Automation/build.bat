@@ -15,5 +15,5 @@ if "%~1"=="" (
 
 python Automation\automation.py %~1
 
-pause
+
 
