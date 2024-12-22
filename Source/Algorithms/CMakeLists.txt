@@ -16,7 +16,7 @@ project(
 add_subdirectory(AStar)
 add_subdirectory(Contraction)
 add_subdirectory(DisJointSet)
-
+add_subdirectory(RBTREE)
 # Include driver_app subdirectory if CHAPTER2_BUILD_DRIVER_APPLICATION flag is
 # enabled.
 if(CHAPTER2_BUILD_DRIVER_APPLICATION)
