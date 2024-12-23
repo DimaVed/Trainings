@@ -22,7 +22,7 @@ typedef void (*visit_t)(const struct tree_t*);
 
 
 struct Tree* InitRBTree();
-void TreeInsert(struct Tree* T, struct tree_t* z);
+void RBTreeInsert(struct Tree* T, struct tree_t* z);
 struct tree_t* MakeTreeNode(int val);
 
 //
