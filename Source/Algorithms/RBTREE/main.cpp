@@ -11,7 +11,7 @@
 using namespace   Catch::Matchers;
 
 
-void TestInsertionMinimal() {
+TEST_CASE("Preprocessor PropertyMacro", "[Preprocessor]") {
 
 struct Tree* T = InitRBTree();
   assert(T->root ==T->nil);
@@ -25,10 +25,16 @@ assert(T->root->right == T->nil);
 RBTreeInsert(T, MakeTreeNode(-1));
 RBTreeInsert(T, MakeTreeNode(1));
 assert(T->root->color == Black);
+assert(T->root->key == 0);
+assert(T->root->left->key == -1);
+assert(T->root->right->key == 1);
+
+RBTreeInsert(T, MakeTreeNode(-2));
+assert(T->root->key == 0);
 
 }
 
-TEST_CASE("Preprocessor PropertyMacro", "[Preprocessor]") {
+TEST_CASE("RB TREE PropertyMacro", "[Preprocessor]") {
 
 	const volatile int a = 4;
 	struct Tree* T = InitRBTree();
@@ -40,6 +46,8 @@ TEST_CASE("Preprocessor PropertyMacro", "[Preprocessor]") {
 	RBTreeInsert(T, MakeTreeNode(5));
 	RBTreeInsert(T, MakeTreeNode(6));
 	RBTreeInsert(T, MakeTreeNode(7));
+	RBTreeInsert(T, MakeTreeNode(8));
+	RBTreeInsert(T, MakeTreeNode(9));
 	assert(T->root->color == Black);
 
 }
