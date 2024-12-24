@@ -253,6 +253,7 @@ void fixDelete(struct Tree* T, struct tree_t* node)
 }
 
 
+
 struct tree_t*  RBTreeMin(struct tree_t* node) {
 	struct tree_t* current = node;
 	while (current->left != nullptr)
@@ -260,6 +261,16 @@ struct tree_t*  RBTreeMin(struct tree_t* node) {
 	return current;
 
 }
+
+
+struct tree_t* RBTreeMax(struct tree_t* node) {
+	while ( node->right)
+	{
+		node = node->right;
+	}
+	return node;
+}
+
 
 void transplant(struct tree_t *root, struct tree_t* u, struct tree_t* v)
 {
@@ -305,38 +316,6 @@ void printHelper(struct tree_t* root, char* indent, int last)
 }
 
 
-
-void printBT(char* prefix, struct tree_t*  root, bool isLeft)
-{
-	if (root != 0)
-	{
-		printf("%s", prefix);
-
-		printf ("%s", isLeft ? "|---" : "\---");
-
-		// print the value of the node
-		printf("%d", root->key);
-		printf("(");
-		printf(root->color == RED ? "RED" : "BLACK");
-		printf("')\n");
-
-		// enter the next tree level - left and right branch
-		if (isLeft) {
-			strcat(prefix, "|   ");
-		}
-		else {
-			strcat(prefix, "   ");
-		}
-		printBT(prefix , root->left, true);
-		printBT(prefix , root->right, false);
-	}
-}
-
-
-// Public Funcs
-
-
-// Public function: Insert a value into Red-Black Tree
 void insert(struct Tree* T, int key)
 {
 	struct tree_t* node = MakeTreeNode(key);
@@ -359,7 +338,6 @@ void insert(struct Tree* T, int key)
 	fixInsert(T,node);
 }
 
-// Public function: Remove a value from Red-Black Tree
 void remove(struct Tree* T,int  key)
 {
 	struct tree_t* node = T->root;
@@ -418,7 +396,6 @@ void remove(struct Tree* T,int  key)
 	}
 }
 
-// Public function: Print the Red-Black Tree
 void printTree(struct Tree* T)
 {
 	if (T->root == 0)
@@ -432,3 +409,27 @@ void printTree(struct Tree* T)
 
 
 
+struct tree_t* Search(Tree* T, int value)
+{
+	struct tree_t* x = T->root;
+	while ( x!=0&& value !=x->key)
+	{
+		if (value < x->key) {
+			x = x->left;
+		}
+		else {
+			x = x->right;
+		}
+	}
+	return x;
+}
+
+struct tree_t* LowerBound(struct tree_t* node) {
+	
+
+	struct tree_t* res;
+
+	// To do impl lower bound
+	return res;
+
+}

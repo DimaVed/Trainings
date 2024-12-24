@@ -26,9 +26,9 @@ struct Tree* T = InitRBTree();
   insert(T, 2);
   insert(T, 6);
 
-
-
   printTree(T);
+
+  struct tree_t* res = Search(T, 26);
 
   assert(T->root->color == BLACK);
 }

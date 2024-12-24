@@ -26,7 +26,9 @@ void printTree(struct Tree* T);
 void remove(struct Tree* T, int  key);
 void insert(struct Tree* T, int key);
 
-struct tree_t* RBTreeSearch(struct tree_t* top, int value);
+
+
+struct tree_t* Search(struct Tree* T, int value);
 struct tree_t* RBTreeMin(struct tree_t* top);
 
 struct tree_t* MakeTreeNode(int val);
