@@ -8,13 +8,11 @@
 #include <algorithm>
 #include <numeric>
 
-using namespace   Catch::Matchers;
-
+using namespace Catch::Matchers;
 
 TEST_CASE("RB TREE ins", "[RBTREE]") {
-
-struct Tree* T = InitRBTree();
-  assert(T->root ==0);
+  struct Tree* T = InitRBTree();
+  assert(T->root == 0);
   insert(T, 7);
   insert(T, 3);
   insert(T, 18);
@@ -28,23 +26,28 @@ struct Tree* T = InitRBTree();
 
   printTree(T);
 
-  struct tree_t* res = Search(T, 26);
+  
+
+  assert(26 == LowerBound(T, 25)->key);
+  assert(2 == LowerBound(T, 1)->key);
+  assert(2 == LowerBound(T, 2)->key);
+  assert(6 == LowerBound(T, 4)->key);
+  assert(7 == LowerBound(T, 7)->key);
 
   assert(T->root->color == BLACK);
 }
 
 TEST_CASE("RB TREE ins  color", "[RBTREE]") {
+  struct Tree* T = InitRBTree();
+  assert(T->root == 0);
+  insert(T, 0);
+  insert(T, -1);
+  insert(T, 1);
+  printTree(T);
+  struct tree_t* not_exist = Search(T, -2);
+  struct tree_t* exist = Search(T, -1);
+  assert(not_exist == 0);
+  assert(exist != 0);
 
-	struct Tree* T = InitRBTree();
-	assert(T->root == 0);
-	insert(T, 0);
-	insert(T, -1);
-	insert(T, 1);
-	printTree(T);
-	
-	
-
-	assert(1 == 1);
+  assert(1 == 1);
 }
-
-

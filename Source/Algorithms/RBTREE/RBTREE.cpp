@@ -424,12 +424,20 @@ struct tree_t* Search(Tree* T, int value)
 	return x;
 }
 
-struct tree_t* LowerBound(struct tree_t* node) {
-	
+struct tree_t* LowerBound(Tree* T, int x) {
 
-	struct tree_t* res;
 
-	// To do impl lower bound
-	return res;
+  struct tree_t* parent = T->root;
+  struct tree_t* curr  =T->root;
+
+
+  while (curr != NULL) {
+    if (x>curr)
+    
+     
+  }
+  
+  // To do impl lower bound
+  return parent;
 
 }
