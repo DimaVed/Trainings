@@ -1,9 +1,10 @@
-
+ï»¿
 
 #include <assert.h>
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "RBTREE.h"
 
@@ -14,65 +15,19 @@
 struct tree_t* MakeTreeNode(int val) {
 	struct tree_t* res = (struct tree_t*)calloc(1, sizeof(struct tree_t));
 	res->key = val;
+	res->right = res->left = res->p = 0;
 	return res;
 }
 
 struct Tree* InitRBTree() {
-
 	struct Tree* T = (struct Tree*)calloc(1, sizeof(Tree));
 	T->nil = MakeTreeNode(0);
-	T->nil->color = Black;
-	T->root = T->nil;
+	T->nil->color = BLACK;
+	T->root = 0;
 	return T;
 }
 
-struct tree_t* RBTreeSearch(struct tree_t* top, int value) {
-	while (top != 0 && value != top->key) {
-		if (value < top->key) {
-			top = top->left;
-		}
-		else {
-			top = top->right;
-		}
-	}
-	return top;
-}
-struct tree_t* RBTreeMin(struct tree_t* top) {
-	while (top->left != 0) {
-		top = top->left;
-	}
-	return top;
-}
-struct tree_t* RBTreeMax(struct tree_t* top) {
-	while (top->right != 0) {
-		top = top->right;
-	}
-	return top;
-}
 
-struct tree_t* RBTreeSuccessor(struct tree_t* x) {
-	if (x->right == 0) {
-		return RBTreeMin(x->right);
-	}
-	struct tree_t* y = x->p;
-	while (y != 0 && x != y->right) {
-		x = y;
-		y = y->p;
-	}
-	return y;
-}
-
-struct tree_t* TreePredcessor(struct tree_t* x) {
-	if (x->left == 0) {
-		return RBTreeMax(x->left);
-	}
-	struct tree_t* y = x->p;
-	while (y != 0 && x != y->left) {
-		x = y;
-		y = y->p;
-	}
-	return y;
-}
 
 
 //-------------Rotation algos------------------
@@ -96,30 +51,26 @@ struct tree_t* TreePredcessor(struct tree_t* x) {
 
 //Left Rotation Steps :
 //Set y to be the right child of x.
-//Move y’s left subtree to x’s right subtree.
+//Move yâ€™s left subtree to xâ€™s right subtree.
 //Update the parent of xand y.
-//Update x’s parent to point to y instead of x.
-//Set y’s left child to x.
-//Update x’s parent to y.
+//Update xâ€™s parent to point to y instead of x.
+//Set yâ€™s left child to x.
+//Update xâ€™s parent to y.
 
-void LeftRotateRB(struct Tree* T, struct tree_t* x) {
-	struct tree_t* y = x->right;
-	x->right = y->left;
-	if (y->left != T->nil) {
-		y->left->p = x;
-	}
-	y->p = x->p;
-	if (x->p == nullptr) {
-		T->root = y;
-	}
-	else if (x == x->p->left) {
-		x->p->left = y;
-	}
-	else {
-		x->p->right = y;
-	}
-	y->left = x;
-	x->p = y;
+void LeftRotateRB(struct Tree* T, struct tree_t* node) {
+	struct tree_t* child = node->right;
+	node->right = child->left;
+	if (node->right != 0)
+		node->right->p = node;
+	child->p = node->p;
+	if (node->p == 0)
+		T->root = child;
+	else if (node == node->p->left)
+		node->p->left = child;
+	else
+		node->p->right = child;
+	child->left = node;
+	node->p = child;
 }
 
 
@@ -143,142 +94,341 @@ void LeftRotateRB(struct Tree* T, struct tree_t* x) {
 //   
 //Right rotation steps  :
 //Set y to be the left child of x.
-//Move y’s right subtree to x’s left subtree.
+//Move yâ€™s right subtree to xâ€™s left subtree.
 //Update the parent of xand y.
-//Update x’s parent to point to y instead of x.
-//Set y’s right child to x.
-//Update x’s parent to y.
+//Update xâ€™s parent to point to y instead of x.
+//Set yâ€™s right child to x.
+//Update xâ€™s parent to y.
 
 
-void RightRotateRB(struct Tree* T, struct tree_t* x) {
-	struct tree_t* y = x->left;
-	x->left = y->right;
-	if (y->right != T->nil) {
-		y->right->p = x;
-	}
-	y->p = x->p;
-	if (x->p == T->nil) {
-		T->root = y;
-	}
-	else if (x == x->p->right) {
-		x->p->right = y;
-	}
-	else {
-		x->p->left = y;
-	}
-	y->right = x;
-	x->p = y;
+void RightRotateRB(struct Tree* T, struct tree_t* node) {
+	struct tree_t* child = node->left;
+	node->left = child->right;
+	if (node->left != 0)
+		node->left->p = node;
+	child->p = node->p;
+	if (node->p == 0)
+		T->root = child;
+	else if (node == node->p->left)
+		node->p->left = child;
+	else
+		node->p->right = child;
+	child->right = node;
+	node->p = child;
 }
 
+void swap_color(struct tree_t* l, struct tree_t* r) {
+	enum color_t tmp = l->color;
+	l->color = r->color;
+	r->color = l->color;
+}
 
-
-
-void TreeInsertFix(struct Tree* T, struct tree_t* z) {
-	while (z->p->color == Red) {
-		if (z->p == z->p->p->left) {
-			struct tree_t* y = z->p->p->right;
-			if (y->color == Red) {
-				z->p->color == Black;
-				y->color = Black;
-				z->p->p->color = Red;
-				z = z->p->p;
+//----------------------------------
+void fixInsert(struct Tree* T, struct tree_t* node)
+{
+	struct tree_t* parent = nullptr;
+	struct tree_t* grandparent = nullptr;
+	while (node != T->root && node->color == RED
+		&& node->p->color == RED) {
+		parent = node->p;
+		grandparent = parent->p;
+		if (parent == grandparent->left) {
+			struct tree_t* uncle = grandparent->right;
+			if (uncle != nullptr
+				&& uncle->color == RED) {
+				grandparent->color = RED;
+				parent->color = BLACK;
+				uncle->color = BLACK;
+				node = grandparent;
 			}
-			else if (z == z->p->right) {
-				z = z->p;
-				LeftRotateRB(T, z);
+			else {
+				if (node == parent->right) {
+					LeftRotateRB(T,parent);
+					node = parent;
+					parent = node->p;
+				}
+				RightRotateRB(T,grandparent);
+
+				swap_color(parent, grandparent);
+				node = parent;
 			}
-			z->p->color = Black;
-			z->p->p->color = Red;
-			RightRotateRB(T, z->p->p);
 		}
 		else {
-			struct tree_t* y = z->p->p->left;
-			if (y->color == Red) {
-				z->p->color == Black;
-				y->color = Black;
-				z->p->p->color = Red;
-				z = z->p->p;
+			struct tree_t* uncle = grandparent->left;
+			if (uncle != nullptr
+				&& uncle->color == RED) {
+				grandparent->color = RED;
+				parent->color = BLACK;
+				uncle->color = BLACK;
+				node = grandparent;
 			}
-			else if (z == z->p->left) {
-				z = z->p;
-				RightRotateRB(T, z);
+			else {
+				if (node == parent->left) {
+					RightRotateRB(T,parent);
+					node = parent;
+					parent = node->p;
+				}
+				LeftRotateRB(T,grandparent);
+				swap_color(parent, grandparent);
+				node = parent;
 			}
-			z->p->color = Black;
-			z->p->p->color = Red;
-			LeftRotateRB(T, z->p->p);
 		}
 	}
-	T->root->color = Black;
+	T->root->color = BLACK;
 }
 
-void RBTreeInsert(struct Tree* T, struct tree_t* z) {
-	struct tree_t* y = T->nil;
-	struct tree_t* x = T->root;
-	while (x != T->nil) {
-		y = x;
-		if (z->key < x->key) {
-			x = x->left;
+
+
+void fixDelete(struct Tree* T, struct tree_t* node)
+{
+	while (node != T->root && node->color == BLACK) {
+		if (node == node->p->left) {
+			struct tree_t* sibling = node->p->right;
+			if (sibling->color == RED) {
+				sibling->color = BLACK;
+				node->p->color = RED;
+				LeftRotateRB(T,node->p);
+				sibling = node->p->right;
+			}
+			if ((sibling->left == nullptr
+				|| sibling->left->color == BLACK)
+				&& (sibling->right == nullptr
+					|| sibling->right->color
+					== BLACK)) {
+				sibling->color = RED;
+				node = node->p;
+			}
+			else {
+				if (sibling->right == nullptr
+					|| sibling->right->color == BLACK) {
+					if (sibling->left != nullptr)
+						sibling->left->color = BLACK;
+					sibling->color = RED;
+					RightRotateRB(T,sibling);
+					sibling = node->p->right;
+				}
+				sibling->color = node->p->color;
+				node->p->color = BLACK;
+				if (sibling->right != nullptr)
+					sibling->right->color = BLACK;
+				LeftRotateRB(T,node->p);
+				node = T->root;
+			}
 		}
 		else {
-			x = x->right;
+			struct tree_t* sibling = node->p->left;
+			if (sibling->color == RED) {
+				sibling->color = BLACK;
+				node->p->color = RED;
+				RightRotateRB(T,node->p);
+				sibling = node->p->left;
+			}
+			if ((sibling->left == nullptr
+				|| sibling->left->color == BLACK)
+				&& (sibling->right == nullptr
+					|| sibling->right->color
+					== BLACK)) {
+				sibling->color = RED;
+				node = node->p;
+			}
+			else {
+				if (sibling->left == nullptr
+					|| sibling->left->color == BLACK) {
+					if (sibling->right != nullptr)
+						sibling->right->color = BLACK;
+					sibling->color = RED;
+					LeftRotateRB(T,sibling);
+					sibling = node->p->left;
+				}
+				sibling->color = node->p->color;
+				node->p->color = BLACK;
+				if (sibling->left != nullptr)
+					sibling->left->color = BLACK;
+				RightRotateRB(T,node->p);
+				node = T->root;
+			}
 		}
 	}
-	z->p = y;
-	if (y == T->nil) {
-		T->root = z;
-	}
-	else if (z->key < y->key) {
-		y->left = z;
-	}
-	else {
-		y->right = z;
-	}
-	z->left = T->nil;
-	z->right = T->nil;
-	z->color = Red;
-	TreeInsertFix(T, z);
+	node->color = BLACK;
 }
 
-void Transplant(struct Tree* T, struct tree_t* u, struct tree_t* v) {
-	if (u->p == T->nil) {
-		T->root = v;
-	}
-	else if (u == u->p->left) {
+
+struct tree_t*  RBTreeMin(struct tree_t* node) {
+	struct tree_t* current = node;
+	while (current->left != nullptr)
+		current = current->left;
+	return current;
+
+}
+
+void transplant(struct tree_t *root, struct tree_t* u, struct tree_t* v)
+{
+	if (u->p == 0)
+		root = v;
+	else if (u == u->p->left)
 		u->p->left = v;
-	}
-	else {
+	else
 		u->p->right = v;
-	}
-	v->p = u->p;
+	if (v != nullptr)
+		v->p = u->p;
 }
 
-void RBTreeDelete(struct Tree* T, struct tree_t* z) {
+
+
+void printHelper(struct tree_t* root, char* indent, int last)
+{
+	if (root != 0) {
+		printf ("%s",  indent);
+		if (last) {
+			printf("%s", "R---:");
+			strcat(indent, "   ");
+			
+		}
+		else {
+			printf("%s", "L---:");
+			strcat(indent , "|  ");
+		}
+		
+		printf("%d", root->key);
+		printf("(");
+		printf(root->color == RED ? "RED" : "BLACK");
+		printf(")\n");
+		char ind1[2024]{0};
+		char ind2[2024]{ 0 };
+		strcpy(ind1, indent);
+		strcpy(ind2, indent);
+
+
+		printHelper(root->left, ind1, false);
+		printHelper(root->right, ind2, true);
+	}
+}
+
+
+
+void printBT(char* prefix, struct tree_t*  root, bool isLeft)
+{
+	if (root != 0)
+	{
+		printf("%s", prefix);
+
+		printf ("%s", isLeft ? "|---" : "\---");
+
+		// print the value of the node
+		printf("%d", root->key);
+		printf("(");
+		printf(root->color == RED ? "RED" : "BLACK");
+		printf("')\n");
+
+		// enter the next tree level - left and right branch
+		if (isLeft) {
+			strcat(prefix, "|   ");
+		}
+		else {
+			strcat(prefix, "   ");
+		}
+		printBT(prefix , root->left, true);
+		printBT(prefix , root->right, false);
+	}
+}
+
+
+// Public Funcs
+
+
+// Public function: Insert a value into Red-Black Tree
+void insert(struct Tree* T, int key)
+{
+	struct tree_t* node = MakeTreeNode(key);
+	struct tree_t* parent = 0;
+	struct tree_t* current = T->root;
+	while (current != 0) {
+		parent = current;
+		if (node->key < current->key)
+			current = current->left;
+		else
+			current = current->right;
+	}
+	node->p = parent;
+	if (parent == 0)
+		T->root = node;
+	else if (node->key < parent->key)
+		parent->left = node;
+	else
+		parent->right = node;
+	fixInsert(T,node);
+}
+
+// Public function: Remove a value from Red-Black Tree
+void remove(struct Tree* T,int  key)
+{
+	struct tree_t* node = T->root;
+	struct tree_t* z = nullptr;
+	struct tree_t* x = nullptr;
+	struct tree_t* y = nullptr;
+	while (node != nullptr) {
+		if (node->key == key) {
+			z = node;
+		}
+
+		if (node->key <= key) {
+			node = node->right;
+		}
+		else {
+			node = node->left;
+		}
+	}
+
+	if (z == nullptr) {
+		printf ( "Key not found in the tree" );
+		return;
+	}
+
+	y = z;
+	color_t yOriginalColor = y->color;
 	if (z->left == 0) {
-		Transplant(T, z, z->right);
+		x = z->right;
+		transplant(T->root, z, z->right);
 	}
 	else if (z->right == 0) {
-		Transplant(T, z, z->left);
+		x = z->left;
+		transplant(T->root, z, z->left);
 	}
 	else {
-		struct tree_t* y = RBTreeMin(z->right);
-		if (y->p != z) {
-			Transplant(T, y, y->right);
+		y = RBTreeMin(z->right);
+		yOriginalColor = y->color;
+		x = y->right;
+		if (y->p == z) {
+			if (x != 0)
+				x->p = y;
+		}
+		else {
+			transplant(T->root, y, y->right);
 			y->right = z->right;
 			y->right->p = y;
 		}
-		Transplant(T, z, y);
+		transplant(T->root, z, y);
 		y->left = z->left;
 		y->left->p = y;
+		y->color = z->color;
+	}
+	delete z;
+	if (yOriginalColor == BLACK) {
+		fixDelete(T,x);
 	}
 }
 
-void tree_add_value(struct tree_t* top, int value) {
-	// IMPL
-}
-void tree_has_value(struct tree_t* top, int value) {
-}
-void tree_visit_range(struct tree_t* top, int l, int r, visit_t v) {
+// Public function: Print the Red-Black Tree
+void printTree(struct Tree* T)
+{
+	if (T->root == 0)
+		printf ( "Tree is empty.\n" );
+	else {
+		printf("Red-Black Tree:\n" );
+		char indent[1024]{0};
+		printHelper( T->root, indent, true);
+	}
 }
 
-void tree_free(struct tree_t* top) {
-}
+
+

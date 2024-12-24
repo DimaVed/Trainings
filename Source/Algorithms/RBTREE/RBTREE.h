@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum color_t { Red, Black };
+enum color_t { RED, BLACK };
 
 struct tree_t {
   struct tree_t* left;
@@ -22,7 +22,13 @@ typedef void (*visit_t)(const struct tree_t*);
 
 
 struct Tree* InitRBTree();
-void RBTreeInsert(struct Tree* T, struct tree_t* z);
+void printTree(struct Tree* T);
+void remove(struct Tree* T, int  key);
+void insert(struct Tree* T, int key);
+
+struct tree_t* RBTreeSearch(struct tree_t* top, int value);
+struct tree_t* RBTreeMin(struct tree_t* top);
+
 struct tree_t* MakeTreeNode(int val);
 
 //

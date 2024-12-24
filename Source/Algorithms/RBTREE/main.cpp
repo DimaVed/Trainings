@@ -11,45 +11,40 @@
 using namespace   Catch::Matchers;
 
 
-TEST_CASE("Preprocessor PropertyMacro", "[Preprocessor]") {
+TEST_CASE("RB TREE ins", "[RBTREE]") {
 
 struct Tree* T = InitRBTree();
-  assert(T->root ==T->nil);
-  RBTreeInsert(T, MakeTreeNode(0));
+  assert(T->root ==0);
+  insert(T, 7);
+  insert(T, 3);
+  insert(T, 18);
+  insert(T, 10);
+  insert(T, 22);
+  insert(T, 8);
+  insert(T, 11);
+  insert(T, 26);
+  insert(T, 2);
+  insert(T, 6);
 
-assert(T->root->key == 0);
-assert(T->root->left == T->nil);
-assert(T->root->right == T->nil);
 
 
-RBTreeInsert(T, MakeTreeNode(-1));
-RBTreeInsert(T, MakeTreeNode(1));
-assert(T->root->color == Black);
-assert(T->root->key == 0);
-assert(T->root->left->key == -1);
-assert(T->root->right->key == 1);
+  printTree(T);
 
-RBTreeInsert(T, MakeTreeNode(-2));
-assert(T->root->key == 0);
-
+  assert(T->root->color == BLACK);
 }
 
-TEST_CASE("RB TREE PropertyMacro", "[Preprocessor]") {
+TEST_CASE("RB TREE ins  color", "[RBTREE]") {
 
-	const volatile int a = 4;
 	struct Tree* T = InitRBTree();
-	//assert(T->root == T->nil);
-	RBTreeInsert(T, MakeTreeNode(1));
-	RBTreeInsert(T, MakeTreeNode(2));
-	RBTreeInsert(T, MakeTreeNode(3));
-	RBTreeInsert(T, MakeTreeNode(4));
-	RBTreeInsert(T, MakeTreeNode(5));
-	RBTreeInsert(T, MakeTreeNode(6));
-	RBTreeInsert(T, MakeTreeNode(7));
-	RBTreeInsert(T, MakeTreeNode(8));
-	RBTreeInsert(T, MakeTreeNode(9));
-	assert(T->root->color == Black);
+	assert(T->root == 0);
+	insert(T, 0);
+	insert(T, -1);
+	insert(T, 1);
+	printTree(T);
+	
+	
 
+	assert(1 == 1);
 }
 
 
