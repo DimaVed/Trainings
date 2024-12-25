@@ -424,20 +424,66 @@ struct tree_t* Search(Tree* T, int value)
 	return x;
 }
 
-struct tree_t* LowerBound(Tree* T, int x) {
+struct tree_t* UpperBound(Tree* T, int x) {
 
 
-  struct tree_t* parent = T->root;
-  struct tree_t* curr  =T->root;
-
-
-  while (curr != NULL) {
-    if (x>curr)
-    
-     
+  struct tree_t* l = RBTreeMin (T->root);
+  struct tree_t* r = RBTreeMax(T->root);
+  if (x < l->key) {
+	  return l;
   }
-  
-  // To do impl lower bound
-  return parent;
+  if (x > r->key) {
+	  return 0;
+  }
 
+  struct tree_t* m =T->root;
+
+  while (m != l && m != r) {
+	  if (m->key <= x) {
+		  l = m;
+		  if (m->right) {
+			  m = m->right;
+		  }
+	}
+	  else {
+		  r = m;
+		  if (m->left) {
+			  m = m->left;
+		  }
+	  }
+
+  }
+  return r;
+
+}
+
+
+struct tree_t* Next(struct tree_t* cur) {
+	if (cur->right != 0)
+	{
+		return RBTreeMin(cur->right);
+	}
+	struct tree_t* y = cur->p;
+	while ( y!=0&&  cur==y->right)
+	{
+		cur = y;
+		y = y->p;
+	}
+	return y;
+	
+}
+struct tree_t* Prev(struct tree_t* cur) {
+
+
+	if (cur->left != 0)
+	{
+		return RBTreeMax(cur->left);
+	}
+	struct tree_t* y = cur->p;
+	while (y != 0 && cur == y->left)
+	{
+		cur = y;
+		y = y->p;
+	}
+	return y;
 }

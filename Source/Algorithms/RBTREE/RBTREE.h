@@ -25,12 +25,13 @@ struct Tree* InitRBTree();
 void printTree(struct Tree* T);
 void remove(struct Tree* T, int  key);
 void insert(struct Tree* T, int key);
-struct tree_t* LowerBound(Tree* T, int value);
-
+struct tree_t* UpperBound(Tree* T, int value);
+struct tree_t* Next(struct tree_t* cur);
+struct tree_t* Prev(struct tree_t* cur);
 
 struct tree_t* Search(struct Tree* T, int value);
 struct tree_t* RBTreeMin(struct tree_t* top);
-
+struct tree_t* RBTreeMax(struct tree_t* node);
 struct tree_t* MakeTreeNode(int val);
 
 //
