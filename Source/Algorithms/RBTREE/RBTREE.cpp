@@ -126,15 +126,15 @@ void swap_color(struct tree_t* l, struct tree_t* r) {
 //----------------------------------
 void fixInsert(struct Tree* T, struct tree_t* node)
 {
-	struct tree_t* parent = nullptr;
-	struct tree_t* grandparent = nullptr;
+	struct tree_t* parent = 0;
+	struct tree_t* grandparent = 0;
 	while (node != T->root && node->color == RED
 		&& node->p->color == RED) {
 		parent = node->p;
 		grandparent = parent->p;
 		if (parent == grandparent->left) {
 			struct tree_t* uncle = grandparent->right;
-			if (uncle != nullptr
+			if (uncle != 0
 				&& uncle->color == RED) {
 				grandparent->color = RED;
 				parent->color = BLACK;
@@ -155,7 +155,7 @@ void fixInsert(struct Tree* T, struct tree_t* node)
 		}
 		else {
 			struct tree_t* uncle = grandparent->left;
-			if (uncle != nullptr
+			if (uncle != 0
 				&& uncle->color == RED) {
 				grandparent->color = RED;
 				parent->color = BLACK;
@@ -190,18 +190,18 @@ void fixDelete(struct Tree* T, struct tree_t* node)
 				LeftRotateRB(T,node->p);
 				sibling = node->p->right;
 			}
-			if ((sibling->left == nullptr
+			if ((sibling->left == 0
 				|| sibling->left->color == BLACK)
-				&& (sibling->right == nullptr
+				&& (sibling->right == 0
 					|| sibling->right->color
 					== BLACK)) {
 				sibling->color = RED;
 				node = node->p;
 			}
 			else {
-				if (sibling->right == nullptr
+				if (sibling->right == 0
 					|| sibling->right->color == BLACK) {
-					if (sibling->left != nullptr)
+					if (sibling->left != 0)
 						sibling->left->color = BLACK;
 					sibling->color = RED;
 					RightRotateRB(T,sibling);
@@ -209,7 +209,7 @@ void fixDelete(struct Tree* T, struct tree_t* node)
 				}
 				sibling->color = node->p->color;
 				node->p->color = BLACK;
-				if (sibling->right != nullptr)
+				if (sibling->right != 0)
 					sibling->right->color = BLACK;
 				LeftRotateRB(T,node->p);
 				node = T->root;
@@ -223,18 +223,18 @@ void fixDelete(struct Tree* T, struct tree_t* node)
 				RightRotateRB(T,node->p);
 				sibling = node->p->left;
 			}
-			if ((sibling->left == nullptr
+			if ((sibling->left == 0
 				|| sibling->left->color == BLACK)
-				&& (sibling->right == nullptr
+				&& (sibling->right == 0
 					|| sibling->right->color
 					== BLACK)) {
 				sibling->color = RED;
 				node = node->p;
 			}
 			else {
-				if (sibling->left == nullptr
+				if (sibling->left == 0
 					|| sibling->left->color == BLACK) {
-					if (sibling->right != nullptr)
+					if (sibling->right != 0)
 						sibling->right->color = BLACK;
 					sibling->color = RED;
 					LeftRotateRB(T,sibling);
@@ -242,7 +242,7 @@ void fixDelete(struct Tree* T, struct tree_t* node)
 				}
 				sibling->color = node->p->color;
 				node->p->color = BLACK;
-				if (sibling->left != nullptr)
+				if (sibling->left != 0)
 					sibling->left->color = BLACK;
 				RightRotateRB(T,node->p);
 				node = T->root;
@@ -256,7 +256,7 @@ void fixDelete(struct Tree* T, struct tree_t* node)
 
 struct tree_t*  RBTreeMin(struct tree_t* node) {
 	struct tree_t* current = node;
-	while (current->left != nullptr)
+	while (current->left != 0)
 		current = current->left;
 	return current;
 
@@ -280,7 +280,7 @@ void transplant(struct tree_t *root, struct tree_t* u, struct tree_t* v)
 		u->p->left = v;
 	else
 		u->p->right = v;
-	if (v != nullptr)
+	if (v != 0)
 		v->p = u->p;
 }
 
@@ -341,10 +341,10 @@ void insert(struct Tree* T, int key)
 void remove(struct Tree* T,int  key)
 {
 	struct tree_t* node = T->root;
-	struct tree_t* z = nullptr;
-	struct tree_t* x = nullptr;
-	struct tree_t* y = nullptr;
-	while (node != nullptr) {
+	struct tree_t* z = 0;
+	struct tree_t* x = 0;
+	struct tree_t* y = 0;
+	while (node != 0) {
 		if (node->key == key) {
 			z = node;
 		}
@@ -357,7 +357,7 @@ void remove(struct Tree* T,int  key)
 		}
 	}
 
-	if (z == nullptr) {
+	if (z == 0) {
 		printf ( "Key not found in the tree" );
 		return;
 	}
@@ -409,7 +409,7 @@ void printTree(struct Tree* T)
 
 
 
-struct tree_t* Search(Tree* T, int value)
+struct tree_t* Search(struct Tree* T, int value)
 {
 	struct tree_t* x = T->root;
 	while ( x!=0&& value !=x->key)
@@ -424,7 +424,7 @@ struct tree_t* Search(Tree* T, int value)
 	return x;
 }
 
-struct tree_t* UpperBound(Tree* T, int x) {
+struct tree_t* UpperBound(struct Tree* T, int x) {
 
 
   struct tree_t* l = RBTreeMin (T->root);

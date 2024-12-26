@@ -34,9 +34,4 @@ struct tree_t* RBTreeMin(struct tree_t* top);
 struct tree_t* RBTreeMax(struct tree_t* node);
 struct tree_t* MakeTreeNode(int val);
 
-//
-void tree_add_value(struct tree_t* top, int value);
-void tree_has_value(struct tree_t* top, int value);
-void tree_visit_range(struct tree_t* top, int l, int r, visit_t v);
-void tree_free(struct tree_t* top);
 
