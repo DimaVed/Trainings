@@ -26,11 +26,18 @@ set(VCPKG_TARGET_TRIPLET x64-windows-static)
 message( STATUS  "Path to vcpkg root" $ENV{VCPKG_ROOT})
 include( $ENV{VCPKG_ROOT}\\scripts\\buildsystems\\vcpkg.cmake)
 include_directories( ${INCLUDE_DIRECTORIES}  $ENV{VCPKG_ROOT}\\installed\\x64-windows-static\\include\\ )
+
+# настройка статической линковки Boost
+set(Boost_USE_STATIC_LIBS       ON)
+set(Boost_USE_MULTITHREADED     ON)
+set(Boost_USE_STATIC_RUNTIME    ON)
+
 find_package(Catch2 CONFIG REQUIRED)
+find_package(Boost  REQUIRED COMPONENTS json log program_options locale serialization)
 include(Catch)
-add_subdirectory (Source/Algorithms)
-add_subdirectory (Source/CppFeatures)
-add_subdirectory (Source/ParaPython)
+add_subdirectory (src/Algorithms)
+add_subdirectory (src/CppFeatures)
+add_subdirectory (src/ParaPython)
  
 
 get_all_targets(all_targets)
@@ -51,5 +58,7 @@ foreach(exec  ${all_targets})
     target_compile_options(${exec} PRIVATE -Wall -Wextra -Wpedantic -Werror)
        endif()
        target_link_libraries(${exec}  PRIVATE Catch2::Catch2 Catch2::Catch2WithMain)
+	   target_link_libraries(${exec}   PRIVATE ${Boost_LIBRARIES})
+	   target_include_directories(${exec} PRIVATE ${Boost_INCLUDE_DIRS})
 
 endforeach()

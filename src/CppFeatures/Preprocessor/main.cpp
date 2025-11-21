@@ -35,15 +35,15 @@ TEST_CASE ("Preprocessor PropertyMacro", "[Preprocessor]") {
 
 TEST_CASE("Preprocessor BadMacro", "[Preprocessor]") {
 
-// Не тот макрос подъехал с какой-то библиотекой 
+// пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 #define Sqr(q) q*q
 
 	CHECK(Sqr(3) == 9);
 	CHECK(Sqr(3+1)!= 16);
 
-// сделать stash кривого макроса
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ stash пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 #pragma push_macro ("Sqr")
-// Переорпределили макрос
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 #ifdef  Sqr
 #undef Sqr
 #define  Sqr(q) ((q)*(q))
@@ -62,7 +62,7 @@ TEST_CASE("Preprocessor Warning Supress", "[Preprocessor]") {
 	int i = 0;
 	size_t b = 10;
 
-// В проекте выставлен флаг warning as error 
+// пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ warning as error 
 
 #pragma warning( push )
 #pragma warning( disable : 4267)

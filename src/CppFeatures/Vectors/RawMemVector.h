@@ -102,7 +102,7 @@ namespace rmv {
             swap(other);
         }
 
-        // Конструктор от списка инициализации
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         vector(std::initializer_list<T> data) {
             reserve(data.size());
             for (auto& item : data) {
@@ -263,7 +263,7 @@ namespace rmv {
         size_t capacity() const noexcept {
             return data.Capacity();
         }
-        // Доступ
+        // пїЅпїЅпїЅпїЅпїЅпїЅ
         const T& operator[](size_t i) const {
             return data[i];
         }
