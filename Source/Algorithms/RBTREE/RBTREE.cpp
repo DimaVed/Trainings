@@ -75,7 +75,7 @@ void LeftRotateRB(struct Tree* T, struct tree_t* node) {
 
 
 
-//   Befor Right Rotation:    
+//   Before Right Rotation:    
 //   
 //         x
 //        /
@@ -425,8 +425,6 @@ struct tree_t* Search(struct Tree* T, int value)
 }
 
 struct tree_t* UpperBound(struct Tree* T, int x) {
-
-
   struct tree_t* l = RBTreeMin (T->root);
   struct tree_t* r = RBTreeMax(T->root);
   if (x < l->key) {
@@ -435,7 +433,6 @@ struct tree_t* UpperBound(struct Tree* T, int x) {
   if (x > r->key) {
 	  return 0;
   }
-
   struct tree_t* m =T->root;
 
   while (m != l && m != r) {

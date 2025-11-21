@@ -41,7 +41,7 @@ TEST_CASE("Preprocessor BadMacro", "[Preprocessor]") {
 	CHECK(Sqr(3) == 9);
 	CHECK(Sqr(3+1)!= 16);
 
-// сделать stash кривого макрос
+// сделать stash кривого макроса
 #pragma push_macro ("Sqr")
 // Переорпределили макрос
 #ifdef  Sqr
