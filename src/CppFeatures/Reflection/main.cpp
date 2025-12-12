@@ -29,13 +29,12 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
-
 #pragma warning( pop ) 
 using namespace   Catch::Matchers;
 using namespace boost::describe;
 
 
-// универсальные фенкции для сереилизации/ десериализации enum 
+// универсальные функции для сереализации/ десериализации enum 
 
 template<class E> char const* enum_to_string(E e)
 {
@@ -185,7 +184,7 @@ TEST_CASE (" json reflection", "[Reflection]") {
     // сериализация в json
    auto json_obj = boost::json::value_from(Vasyan);
    auto json_str = boost::json::serialize(json_obj);
-  // std::cout << json_str << std::endl;
+   std::cout << json_str << std::endl;
    auto json2 = boost::json::parse(json_str);
  
 
@@ -210,6 +209,23 @@ TEST_CASE (" json reflection", "[Reflection]") {
      // Печать точки  
      //std::cout << tmp_point << std::endl;
      // для работы оператора необходимо перегрузить операторы вывода для словаря и вектора и вытащить его в общую область
+
+ }
+
+ TEST_CASE("NOt full data for class ", "[Reflection]") {
+
+     //  is_alive and name undefined 
+
+     std::string raw = R"({"coords":{"x":1,"y":1},"age":3,"times":[1,2,3,4,5],"result":{"res1":2.34E2,"res2":1.23214534E8}})";
+     auto inp = boost::json::parse(raw);
+     try {
+         cat Vasyan2 = boost::json::value_to <cat>(inp);
+     }
+     // if some class data undefined you will get an exception
+     catch (std::exception& ex) {
+         std::cout << "exception" << ex.what();
+     }
+
 
  }
 
@@ -250,6 +266,10 @@ TEST_CASE (" json reflection", "[Reflection]") {
 
 
  }
+
+
+
+
 
 
 
